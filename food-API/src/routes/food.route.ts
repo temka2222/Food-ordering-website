@@ -1,9 +1,15 @@
 import { Router } from "express";
-import express from "express";
-import { createFood } from "../controllers/Food";
+import { getFoodController } from "../controllers/foodController/getFoodController";
+import { createFoodController } from "../controllers/foodController/createFoodController";
+import { updateFoodController } from "../controllers/foodController/putFoodController";
+import { deleteteFoodController } from "../controllers/foodController/deleteFoodControllers";
 
-const foodRouter = express.Router();
+const foodRouter = Router();
 
-foodRouter.post("/", createFood);
+foodRouter
+  .get("/", getFoodController)
+  .post("/", createFoodController)
+  .put("/", updateFoodController)
+  .delete("/", deleteteFoodController);
 
 export default foodRouter;
