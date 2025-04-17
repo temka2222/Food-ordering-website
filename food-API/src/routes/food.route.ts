@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { getFoodController } from "../controllers/foodController/getFoodController";
-import { createFoodController } from "../controllers/foodController/createFoodController";
-import { updateFoodController } from "../controllers/foodController/putFoodController";
-import { deleteteFoodController } from "../controllers/foodController/deleteFoodControllers";
+import { createFoodController } from "../controllers/foodController/create-food";
+import { updateFoodController } from "../controllers/foodController/update-foods-by-id";
+import { deleteteFoodController } from "../controllers/foodController/delete-food-by-id";
+import { getFoodsBycategory } from "../controllers/foodController/get-foods-by-category";
 
 const foodRouter = Router();
 
 foodRouter
-  .get("/", getFoodController)
+  .get("/", getFoodsBycategory)
   .post("/", createFoodController)
   .put("/", updateFoodController)
   .delete("/", deleteteFoodController);
