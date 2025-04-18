@@ -2,6 +2,7 @@
 import { ArrowLeft, ArrowLeftIcon } from "lucide-react";
 import { PropsWithChildren, use, useState } from "react";
 import { InputEmail } from "./_components/inputEmail";
+import { UserProvider } from "./_components/userValueProvider";
 type UserValueType = {
   email: string | "";
   password: string | "";
@@ -22,8 +23,8 @@ export default function Home() {
   });
 
   return (
-    <StepProvider>
-      step == 1 && <InputEmail />;
-    </StepProvider>
+    <UserProvider userValues={userValues} setUserValues={setUserValues}>
+      step == 1 && <InputEmail step={step} setStep={setStep}/>;
+    </UserProvider>
   );
 }
