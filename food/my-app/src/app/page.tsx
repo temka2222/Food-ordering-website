@@ -1,5 +1,4 @@
 import { Categories } from "./_components/Categories";
-import { StepProvider } from "./sign-up/_components/stepProvider";
 import { UserProvider } from "./sign-up/_components/userValueProvider";
 
 export default function Home() {
