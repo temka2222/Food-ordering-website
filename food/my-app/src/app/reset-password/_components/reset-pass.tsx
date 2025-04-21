@@ -2,9 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUser } from "./userValueProvider";
+import { useUser } from "@/app/sign-up/_components/userValueProvider";
 import { useState } from "react";
-import { text } from "stream/consumers";
 import { useRouter } from "next/navigation";
 const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const letters = [
@@ -63,7 +62,7 @@ export const schema = z
     path: ["confirmPass"],
   });
 
-export const CreatePassword = ({ step, setStep }: StepPropsType) => {
+export const ResetPassword = ({ step, setStep }: StepPropsType) => {
   const router = useRouter();
   const { userValues, setUserValues } = useUser();
   const [checkValue, setCheckValue] = useState(false);
@@ -89,9 +88,9 @@ export const CreatePassword = ({ step, setStep }: StepPropsType) => {
             <ArrowLeft />
           </button>
           <div>
-            <p className="font-bold text-2xl">Create a strong password</p>
+            <p className="font-bold text-2xl">Create new password</p>
             <p className="text-[#71717A] ">
-              Create a strong password with letters, numbers.
+              Set a new password with a combination of letters and numbers for better security.
             </p>
           </div>
           <form
@@ -138,7 +137,7 @@ export const CreatePassword = ({ step, setStep }: StepPropsType) => {
               type="submit"
               className="w-[70%] flex justify-center items-center bg-[#cccbcc] text-white border-solid border pr-8 pl-8 rounded-sm p-2 "
             >
-              Let's Go
+              Create password
             </button>
           </form>
           <div className="flex flex-row gap-3">

@@ -1,10 +1,9 @@
-"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useUser } from "@/app/sign-up/_components/userValueProvider";
 import { useRouter } from "next/navigation";
-import { useUser } from "../sign-up/_components/userValueProvider";
 type StepPropsType = {
   step: number;
   setStep: (value: number) => void;
@@ -14,14 +13,8 @@ export const schema = z.object({
     .string()
     .min(1, { message: "Insert email" })
     .email({ message: "Please provide a valid email address." }),
-  password: z
-    .string()
-    .min(1, { message: "Insert Password" })
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, {
-      message: "Password must include at least one letter and one number.",
-    }),
 });
-export default function Home() {
+export const InsertEmail = ({ step, setStep }: StepPropsType) => {
   const router = useRouter();
   const { userValues, setUserValues } = useUser();
 
@@ -31,7 +24,7 @@ export default function Home() {
       email: "",
     },
   });
-  console.log(userValues);
+
   return (
     <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-[16px]">
       <div className="flex-1 ">
@@ -45,21 +38,20 @@ export default function Home() {
             <ArrowLeft />
           </button>
           <div>
-            <p className="font-bold text-2xl">Log in </p>
+            <p className="font-bold text-2xl">Reset your password </p>
             <p className="text-[#71717A] ">
-              Log in to enjoy your favorite dishes.
+              Enter your email to receive a password reset link.
             </p>
           </div>
           <form
             onSubmit={handleSubmit((data) => {
+              setStep(step + 1);
               const newvalue = { ...userValues };
               newvalue.email = data.email;
-              newvalue.password = data.password;
-              newvalue.isLoggedIn = true;
+
               setUserValues(newvalue);
-              router.push("./");
             })}
-            className="  flex flex-col gap-8 items-start  "
+            className="  flex flex-col gap-8  "
           >
             <input
               {...register("email")}
@@ -71,40 +63,22 @@ export default function Home() {
                 {formState.errors.email.message}
               </div>
             )}
-            <input
-              {...register("password")}
-              className="w-[70%] border-solid border rounded-sm p-2"
-              placeholder="Password"
-            ></input>
-            {formState.errors.password && (
-              <div className="text-red-400">
-                {formState.errors.password.message}
-              </div>
-            )}
-      
-            <button onClick={()=>{router.push("./reset-password")}} className="underline">Forgot password ?</button>
-            
             <button
-            onClick={()=>{
-             const  newValues={...userValues}
-             newValues.isLoggedIn=true;
-             setUserValues(newValues)
-             router.push("./")
-              
-            }}
               type="submit"
-              className="w-[70%] flex justify-center items-center bg-black text-white border-solid border pr-8 pl-8 rounded-sm p-2 "
+              className="w-[70%] flex justify-center items-center text-white border-solid border bg-black pr-8 pl-8 rounded-sm p-2 "
             >
-              Let's Go
+              Send link
             </button>
           </form>
           <div className="flex flex-row gap-3">
-            <p className="text-[#71717A]  ">Don't have an account?</p>
+            <p className="text-[#71717A]  ">Already have an account?</p>
             <button
-              onClick={() => router.push("./sign-up")}
+              onClick={() => {
+                router.push("./log-in");
+              }}
               className="text-[#2563EB]"
             >
-              Sign up{" "}
+              Log in{" "}
             </button>
           </div>
         </div>
@@ -115,4 +89,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};

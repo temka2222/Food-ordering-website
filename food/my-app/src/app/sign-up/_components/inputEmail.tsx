@@ -26,7 +26,7 @@ export const InputEmail = ({ step, setStep }: StepPropsType) => {
   });
   console.log(userValues);
   return (
-    <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-xl">
+    <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-[16px]">
       <div className="flex-1 ">
         <div className="flex flex-col gap-8">
           <button
@@ -39,7 +39,7 @@ export const InputEmail = ({ step, setStep }: StepPropsType) => {
           </button>
           <div>
             <p className="font-bold text-2xl">Create your account</p>
-            <p className="text-[#71717A] text-sm">
+            <p className="text-[#71717A] ">
               Sign up to explore your favorite dishes.
             </p>
           </div>
@@ -65,7 +65,7 @@ export const InputEmail = ({ step, setStep }: StepPropsType) => {
             )}
             <button
               type="submit"
-              className="w-[70%] flex justify-center items-center border-solid border pr-8 pl-8 rounded-sm p-2 "
+              className="w-[70%] flex justify-center items-center text-white border-solid border bg-[#cccbcc] pr-8 pl-8 rounded-sm p-2 "
             >
               Let's Go
             </button>
