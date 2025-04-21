@@ -19,7 +19,7 @@ const category: string[] = [
 ];
 export const Categories = () => {
   return (
-    <div className="flex  flex-col gap-10 pt-8 pb-8 p-22 ">
+    <div className="flex  flex-col gap-10 pt-4 pb-4 ">
       <p className="text-[#FFFFFF] font-bold text-xl">Categories</p>
 
       <div className="pl-11 pr-11">

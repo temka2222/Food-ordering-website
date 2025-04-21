@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
 import { UserProvider } from "./sign-up/_components/userValueProvider";
+import { FoodsProvider } from "./_components/foodsProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1440px] m-auto h-fit  `}
       >
         <UserProvider>
-          <Header />
-          {children}
-          <Footer />
+          <FoodsProvider>
+            <Header />
+            {children}
+            <Footer />
+          </FoodsProvider>
         </UserProvider>
       </body>
     </html>
