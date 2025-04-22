@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUser } from "@/app/sign-up/_components/userValueProvider";
+import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -90,7 +90,8 @@ export const ResetPassword = ({ step, setStep }: StepPropsType) => {
           <div>
             <p className="font-bold text-2xl">Create new password</p>
             <p className="text-[#71717A] ">
-              Set a new password with a combination of letters and numbers for better security.
+              Set a new password with a combination of letters and numbers for
+              better security.
             </p>
           </div>
           <form

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUser } from "@/app/sign-up/_components/userValueProvider";
+import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { useRouter } from "next/navigation";
 type StepPropsType = {
   step: number;

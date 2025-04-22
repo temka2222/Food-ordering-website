@@ -81,17 +81,23 @@ export default function Home() {
                 {formState.errors.password.message}
               </div>
             )}
-      
-            <button onClick={()=>{router.push("./reset-password")}} className="underline">Forgot password ?</button>
-            
+
             <button
-            onClick={()=>{
-             const  newValues={...userValues}
-             newValues.isLoggedIn=true;
-             setUserValues(newValues)
-             router.push("./")
-              
-            }}
+              onClick={() => {
+                router.push("./reset-password");
+              }}
+              className="underline"
+            >
+              Forgot password ?
+            </button>
+
+            <button
+              onClick={() => {
+                const newValues = { ...userValues };
+                newValues.isLoggedIn = true;
+                setUserValues(newValues);
+                router.push("./");
+              }}
               type="submit"
               className="w-[70%] flex justify-center items-center bg-black text-white border-solid border pr-8 pl-8 rounded-sm p-2 "
             >

@@ -30,18 +30,18 @@ export const FoodDetail = ({
         >
           x
         </button>
-        <div className="flex h-full flex-col justify-between">
+        <div className="flex h-full w-full flex-col justify-between items-start">
           <div className="flex flex-col gap-3">
             <p className="text-red-400 font-bold text-2xl">{foodName}</p>
             <p className="text-[16px]">{ingredients}</p>
           </div>
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between ">
+          <div className="flex w-full flex-col gap-6">
+            <div className="flex  flex-row justify-between ">
               <div className="flex flex-col">
                 <p>Toatal price</p>
                 <p className="font-bold">₮{price * selectedQty}</p>
               </div>
-              <div className="flex flex-row items-center gap-3 ">
+              <div className="flex   flex-row items-center gap-3 ">
                 <button
                   className="pl-4 pr-4 pt-2 pb-2 bg-white border-solid border rounded-full "
                   onClick={() => {

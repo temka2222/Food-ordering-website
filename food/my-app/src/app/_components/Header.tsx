@@ -1,7 +1,7 @@
 "use client";
 import { Logo } from "./assets/Logo";
 import { useRouter } from "next/navigation";
-import { useUser } from "../sign-up/_components/userValueProvider";
+import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
 import { ShopCard } from "./assets/Shoppingcard";
 import { ChevronRight, MapIcon, MapPin, User2Icon } from "lucide-react";
 

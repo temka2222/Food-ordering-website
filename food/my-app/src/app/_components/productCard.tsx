@@ -1,3 +1,4 @@
+import { CategoryType } from "../(user)/page";
 import { useFoods } from "./foodsProvider";
 
 type FoodsType = {
@@ -5,7 +6,7 @@ type FoodsType = {
   price: number;
   image: string;
   ingredients: string;
-  category: string;
+  category: CategoryType;
   setFoodId: (value: number) => void;
   indx: number;
 };
@@ -23,7 +24,7 @@ export const FoodCard = ({
       onClick={() => {
         setFoodId(indx);
       }}
-      className="flex flex-col bg-white rounded-2xl gap-5 p-4"
+      className="flex h-[360px] flex-col bg-white rounded-2xl gap-5 p-4"
     >
       <img className="rounded-xl" src={image}></img>
       <div className="flex flex-row  justify-between">
