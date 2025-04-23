@@ -1,4 +1,6 @@
+"use client";
 import { Logo } from "@/app/_components/assets/Logo";
+import { useSelectedMenu } from "@/app/_components/selectedMenuProvider";
 import {
   LayoutDashboard,
   MenuIcon,
@@ -7,6 +9,7 @@ import {
 } from "lucide-react";
 
 export const Menu = () => {
+  const { selectedMenu, setSelectedMenu } = useSelectedMenu();
   return (
     <div className="flex flex-col gap-8 pr-5 pl-5 pt-9 pb-9">
       <div className=" flex flex-row gap-3">
@@ -19,16 +22,37 @@ export const Menu = () => {
         </div>
       </div>
       <div className=" flex flex-col gap-6">
-        <div className="flex flex-row gap-2">
-          <LayoutDashboard />
+        <div
+          onClick={() => {
+            setSelectedMenu("food-menu");
+          }}
+          className={`flex flex-row gap-2 pl-6 pr-6 pt-2 pb-2 text-nowrap rounded-2xl ${
+            selectedMenu === "food-menu" ? "bg-black text-white" : ""
+          }`}
+        >
+          <LayoutDashboard size={18} />
           <p>Food menu</p>
         </div>
-        <div className="flex flex-row gap-2">
-          <TruckIcon />
+        <div
+          onClick={() => {
+            setSelectedMenu("orders");
+          }}
+          className={`flex flex-row gap-2 pl-6 pr-6 pt-2 pb-2 text-nowrap rounded-2xl ${
+            selectedMenu === "orders" ? "bg-black text-white" : ""
+          }`}
+        >
+          <TruckIcon size={18} />
           <p>Orders</p>
         </div>
-        <div className="flex flex-row gap-2">
-          <SettingsIcon />
+        <div
+          onClick={() => {
+            setSelectedMenu("settings");
+          }}
+          className={`flex flex-row gap-2 pl-6 pr-6 pt-2 pb-2 text-nowrap rounded-2xl ${
+            selectedMenu === "settings" ? "bg-black text-white" : ""
+          }`}
+        >
+          <SettingsIcon size={18} />
           <p>Settings</p>
         </div>
       </div>

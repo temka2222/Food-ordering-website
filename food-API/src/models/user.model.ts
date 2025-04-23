@@ -8,7 +8,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  PhoneNimber: {
+  phoneNumber: {
     type: Number,
     required: true,
   },
@@ -18,27 +18,26 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    required: true,
+    enum: ["admin", "user"],
+    default: "user",
   },
   orderedFoods: {
-    type: String,
-    required: false,
+    type: [Schema.Types.ObjectId],
+    ref: "order",
+    default: [],
   },
-  ttl: {
-    type: Date,
-    required: true,
-  },
+
   isVerified: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   createdAt: {
     type: Date,
     required: true,
   },
-  updateAt: {
+  updatedAt: {
     type: Date,
     required: true,
   },
 });
-export const userModel = model("food", userSchema);
+export const userModel = model("user", userSchema);

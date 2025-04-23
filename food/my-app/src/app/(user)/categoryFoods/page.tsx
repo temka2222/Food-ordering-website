@@ -23,7 +23,6 @@ export default function SearchCategory() {
   useEffect(() => {
     getFoods();
   }, [categoryId]);
-  console.log(foods);
 
   return (
     <div className="   flex flex-col bg-[#404040] pr-22 pl-22 pb-22  ">

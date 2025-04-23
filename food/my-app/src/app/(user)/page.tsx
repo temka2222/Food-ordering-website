@@ -9,6 +9,7 @@ import { FoodCard } from "../_components/productCard";
 import { FoodDetail } from "../_components/foodDetail";
 export type CategoryType = {
   categoryName: String;
+  _id: string;
   createdAt: Date;
   updatedAt: Date;
 };

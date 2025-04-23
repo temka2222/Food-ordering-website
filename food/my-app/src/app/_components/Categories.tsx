@@ -16,13 +16,13 @@ type Category = {
 export const Categories = () => {
   const [category, setCategory] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState<string>("");
-  const getFoods = async () => {
+  const getCategory = async () => {
     const response = await axios.get("http://localhost:3001/category");
     setCategory(response.data.categories);
   };
 
   useEffect(() => {
-    getFoods();
+    getCategory();
   }, []);
 
   return (
@@ -33,7 +33,7 @@ export const Categories = () => {
         <Carousel>
           <CarouselContent className="flex flex-row gap-4">
             {category?.map((item, indx) => (
-              <Link key={indx} href={`/getByCategory?categoryId=${item._id}`}>
+              <Link key={indx} href={`/categoryFoods?categoryId=${item._id}`}>
                 <CarouselItem
                   onClick={() => {
                     setCategoryId(item._id);
