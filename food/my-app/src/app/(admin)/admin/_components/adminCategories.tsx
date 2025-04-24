@@ -3,12 +3,20 @@ import { CategoryType } from "@/app/(user)/page";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Countfoods } from "./countFoods";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Target } from "lucide-react";
 import { FoodList } from "./foodList";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 export const AdminCategories = () => {
   const [category, setCategory] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [newCategory, setNewCategory] = useState<string>("");
   const getCategory = async () => {
     const response = await axios.get("http://localhost:3001/category");
     setCategory(response.data.categories);
@@ -17,9 +25,19 @@ export const AdminCategories = () => {
   useEffect(() => {
     getCategory();
   }, []);
+  const addCategory = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/category", {
+        categoryName: newCategory,
+      });
+      getCategory();
+    } catch (error) {
+      console.error("amjiltgui", error);
+    }
+  };
   return (
     <div>
-      <div className="grid grid-cols-7 gap-4 p-6 bg-white rounded-xl ">
+      <div className="grid grid-cols-7 gap-2 p-6 bg-white rounded-xl ">
         <div
           onClick={() => {
             setSelectedCategory("");
@@ -47,9 +65,38 @@ export const AdminCategories = () => {
           );
         })}
 
-        <button className="text-white bg-red-500 w-9 h-9 rounded-full flex justify-center items-center ml-4 ">
-          <PlusIcon size={18} />
-        </button>
+        <Dialog>
+          <DialogTrigger className="text-white w-9 h-9 flex justify-center items-center bg-red-500 rounded-full ml-4">
+            <PlusIcon size={18} />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add new category</DialogTitle>
+              <DialogDescription>
+                <div className="flex flex-col w-[462px] h-[272px]  gap-10 justify-center ">
+                  <div className="w-full flex flex-col gap-2">
+                    <p className="text-black">Category name</p>
+                    <input
+                      onChange={(event) => {
+                        setNewCategory(event.target.value);
+                      }}
+                      placeholder="Type category name..."
+                      className=" w-full pr-3 pl-3 pt-2 pb-2 border-solid border"
+                    ></input>
+                  </div>
+                  <div className="w-full flex flex-col items-end">
+                    <button
+                      onClick={() => addCategory()}
+                      className="flex w-[123px] h-10 justify-center items-center bg-black text-white rounded-xl"
+                    >
+                      Add category
+                    </button>
+                  </div>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
       <FoodList categoryId={selectedCategory} />
     </div>
