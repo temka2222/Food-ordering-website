@@ -8,10 +8,10 @@ import { Categories } from "../_components/Categories";
 import { FoodCard } from "../_components/productCard";
 import { FoodDetail } from "../_components/foodDetail";
 export type CategoryType = {
-  categoryName: String;
+  categoryName: string;
   _id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 export type FoodsType = {
   foodName: string;
@@ -19,8 +19,8 @@ export type FoodsType = {
   image: string;
   ingredients: string;
   category: CategoryType;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 export default function Home() {
   const [foods, setFoods] = useState<FoodsType[]>([]);

@@ -6,78 +6,36 @@ import {
   useContext,
   useState,
 } from "react";
+import { FoodsType } from "../(user)/page";
 
-type FoodsType = {
-  foodName: string;
-  price: number;
-  image: string;
-  ingredients: string;
-  category: string;
-};
 export type FoodsContextType = {
-  foods: FoodsType[];
-  setFoods: (value: FoodsType[]) => void;
+  newFood: FoodsType;
+  setNewFood: (value: FoodsType) => void;
 } & PropsWithChildren;
 
-export const FoodsContext = createContext<FoodsContextType>(
+export const NewFoodsContext = createContext<FoodsContextType>(
   {} as FoodsContextType
 );
 
 export const FoodsProvider = ({ children }: PropsWithChildren) => {
-  const [foods, setFoods] = useState<FoodsType[]>([
-    {
-      foodName: "Махны цуглуулга",
-      price: 50000,
-      image: "/hool.jpeg",
-      ingredients:
-        "Үхрийн мах ,Хонины мах , Тахианы мах,Төмс,Шинэ ногооны салад ,Мөөг ,Брокколи ,Шарсан төмс ,Саладны навч",
-      category: "2-р хоол",
+  const [newFood, setNewFood] = useState<FoodsType>({
+    foodName: "",
+    price: 0,
+    image: "",
+    ingredients: "",
+    category: {
+      categoryName: "",
+      _id: "",
+      createdAt: "",
+      updatedAt: "",
     },
-    {
-      foodName: "Махны цуглуулга",
-      price: 50000,
-      image: "/hool.jpeg",
-      ingredients:
-        "Үхрийн мах ,Хонины мах , Тахианы мах,Төмс,Шинэ ногооны салад ,Мөөг ,Брокколи ,Шарсан төмс ,Саладны навч",
-      category: "2-р хоол",
-    },
-    {
-      foodName: "Махны цуглуулга",
-      price: 50000,
-      image: "/hool.jpeg",
-      ingredients:
-        "Үхрийн мах ,Хонины мах , Тахианы мах,Төмс,Шинэ ногооны салад ,Мөөг ,Брокколи ,Шарсан төмс ,Саладны навч",
-      category: "2-р хоол",
-    },
-    {
-      foodName: "Махны цуглуулга",
-      price: 50000,
-      image: "/hool.jpeg",
-      ingredients:
-        "Үхрийн мах ,Хонины мах , Тахианы мах,Төмс,Шинэ ногооны салад ,Мөөг ,Брокколи ,Шарсан төмс ,Саладны навч",
-      category: "2-р хоол",
-    },
-    {
-      foodName: "Махны цуглуулга",
-      price: 50000,
-      image: "/hool.jpeg",
-      ingredients:
-        "Үхрийн мах ,Хонины мах , Тахианы мах,Төмс,Шинэ ногооны салад ,Мөөг ,Брокколи ,Шарсан төмс ,Саладны навч",
-      category: "2-р хоол",
-    },
-    {
-      foodName: "Махны цуглуулга",
-      price: 50000,
-      image: "/hool.jpeg",
-      ingredients:
-        "Үхрийн мах ,Хонины мах , Тахианы мах,Төмс,Шинэ ногооны салад ,Мөөг ,Брокколи ,Шарсан төмс ,Саладны навч",
-      category: "2-р хоол",
-    },
-  ]);
+    createdAt: "",
+    updatedAt: "",
+  });
   return (
-    <FoodsContext.Provider value={{ foods, setFoods }}>
+    <NewFoodsContext.Provider value={{ newFood, setNewFood }}>
       {children}
-    </FoodsContext.Provider>
+    </NewFoodsContext.Provider>
   );
 };
-export const useFoods = () => useContext(FoodsContext);
+export const useNewFood = () => useContext(NewFoodsContext);

@@ -37,7 +37,7 @@ export const AdminCategories = () => {
   };
   return (
     <div>
-      <div className="grid grid-cols-7 gap-2 p-6 bg-white rounded-xl ">
+      <div className="grid grid-cols-7 gap-2 p-6 bg-white rounded-xl justify-between">
         <div
           onClick={() => {
             setSelectedCategory("");
@@ -52,21 +52,22 @@ export const AdminCategories = () => {
         {category.map((item, index) => {
           return (
             <div
+              key={index}
               onClick={() => {
                 setSelectedCategory(item._id);
               }}
-              className={`flex flex-row gap-2 w-fit pr-4 pl-4 h-[36px] border-solid ${
+              className={`flex flex-row  justify-between w-fit pr-4 pl-4 h-[36px] border-solid ${
                 selectedCategory == item._id ? "border-red-500" : "border-black"
-              } border text-nowrap justify-center items-center rounded-2xl`}
+              } border text-nowrap items-center rounded-2xl`}
             >
-              <p>{item.categoryName}</p>
+              <p className="min-w-[100px]">{item.categoryName}</p>
               <Countfoods categoryId={item._id} />
             </div>
           );
         })}
 
         <Dialog>
-          <DialogTrigger className="text-white w-9 h-9 flex justify-center items-center bg-red-500 rounded-full ml-4">
+          <DialogTrigger className="text-white w-9 h-9 flex justify-center items-center bg-red-500 rounded-full ">
             <PlusIcon size={18} />
           </DialogTrigger>
           <DialogContent>
