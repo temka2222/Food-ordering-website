@@ -5,15 +5,6 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { CategoryType, FoodsType } from "@/app/(user)/page";
 import { AdminFoodCard } from "./adminProductCard";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ImageIcon, PlusIcon } from "lucide-react";
 import { AddNewFood } from "./addNewFood";
 type FoodsListProps = {
   categoryId: string | "";
@@ -52,7 +43,9 @@ export const AllFoodList = () => {
             <div key={index} className=" w-full grid grid-cols-4 gap-9">
               {foods?.filter(
                 (cat) => cat.category.categoryName === element.categoryName
-              ).length > 0 && <AddNewFood categoryId={element._id}/>}
+              ).length > 0 && (
+                <AddNewFood categoryId={element._id} getFoods={getFoods} />
+              )}
               {foods
                 ?.filter(
                   (itm) => itm.category.categoryName === element.categoryName
@@ -68,6 +61,7 @@ export const AllFoodList = () => {
                       foodId={item._id}
                       indx={indx}
                       categoryName={item.category.categoryName}
+                      getFoods={getFoods}
                     />
                   </div>
                 ))}
@@ -76,15 +70,5 @@ export const AllFoodList = () => {
         );
       })}
     </div>
-
-    // {/* {foodId !== 0 && (
-    //   <FoodDetail
-    //     foodName={foods[foodId].foodName}
-    //     price={foods[foodId].price}
-    //     image={foods[foodId].image}
-    //     ingredients={foods[foodId].ingredients}
-    //     setFoodId={setFoodId}
-    //   />
-    // )} */}
   );
 };

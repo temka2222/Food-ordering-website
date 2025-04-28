@@ -17,7 +17,7 @@ export const AdminCategories = () => {
   const [category, setCategory] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [newCategory, setNewCategory] = useState<string>("");
- const getCategory = async () => {
+  const getCategory = async () => {
     const response = await axios.get("http://localhost:3001/category");
     setCategory(response.data.categories);
   };
@@ -36,7 +36,7 @@ export const AdminCategories = () => {
     }
   };
   return (
-    <div className="w-full h-min-screen h-auto" >
+    <div className="w-full">
       <div className="grid grid-cols-7 lg:grid-cols-5 gap-4 p-6 bg-white rounded-xl justify-between overflow-visible">
         <div
           onClick={() => {
@@ -63,7 +63,7 @@ export const AdminCategories = () => {
               <p className="min-w-[100px]">{item.categoryName}</p>
               <Countfoods categoryId={item._id} />
             </div>
-          );  
+          );
         })}
 
         <Dialog>

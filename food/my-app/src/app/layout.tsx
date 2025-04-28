@@ -28,13 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1440px] m-auto h-fit  `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-fit`}
       >
         <UserProvider>
           <FoodsProvider>
-            {/* <Header /> */}
-            {children}
-            {/* <Footer /> */}
+            <div className="m-auto w-full max-w-[1440px]">{children}</div>
           </FoodsProvider>
         </UserProvider>
       </body>

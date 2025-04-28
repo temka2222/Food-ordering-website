@@ -11,7 +11,7 @@ import {
 export const Menu = () => {
   const { selectedMenu, setSelectedMenu } = useSelectedMenu();
   return (
-    <div className=" sticky  flex flex-col gap-8 pr-5 pl-5 pt-9 pb-9 bg-white">
+    <div className="  flex flex-col gap-8 pr-5 pl-5 pt-9 pb-9 bg-white">
       <div className=" flex flex-row gap-3">
         <Logo />
         <div>

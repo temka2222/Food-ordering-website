@@ -15,21 +15,16 @@ export type FoodsListProps = {
 export const FoodList = ({ categoryId }: FoodsListProps) => {
   const [foods, setFoods] = useState<FoodsType[]>([]);
 
-
   const getFoods = async () => {
     const response = await axios.get(
       `http://localhost:3001/food?categoryId=${categoryId}`
     );
     setFoods(response.data.foods);
-    
-  
   };
 
   useEffect(() => {
     getFoods();
   }, [categoryId]);
-  
-
 
   return (
     <div className="   flex flex-col bg-white pr-22 pl-22 pb-22 mt-6 rounded-xl">
@@ -38,7 +33,9 @@ export const FoodList = ({ categoryId }: FoodsListProps) => {
           {categoryId !== "" ? foods[0]?.category.categoryName : "All Dishes"}
         </p>
         <div className=" w-full grid grid-cols-4 gap-9">
-          {categoryId !== "" && <AddNewFood categoryId={categoryId} />}
+          {categoryId !== "" && (
+            <AddNewFood categoryId={categoryId} getFoods={getFoods} />
+          )}
           {categoryId !== "" &&
             foods?.map((item, indx) => {
               return (
@@ -49,9 +46,10 @@ export const FoodList = ({ categoryId }: FoodsListProps) => {
                     image={item.image}
                     ingredients={item.ingredients}
                     category={item.category}
-                   foodId={item._id}
+                    foodId={item._id}
                     indx={indx}
                     categoryName={item.category.categoryName}
+                    getFoods={getFoods}
                   />
                 </div>
               );

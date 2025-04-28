@@ -1,6 +1,7 @@
 "use client";
 import { CategoryType } from "@/app/(user)/page";
 import { useNewFood } from "@/app/_components/foodsProvider";
+import { useAlert } from "@/app/_components/showAlertProvider";
 import {
   Dialog,
   DialogContent,
@@ -21,16 +22,18 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DeleteFood } from "./deleteFood";
 
 type FoodsPropsType = {
   foodName: string;
   price: number;
-  image: string ;
+  image: string;
   ingredients: string;
   category: CategoryType;
   categoryName: string;
-  foodId:string;
+  foodId: string;
   indx: number;
+  getFoods: () => Promise<void>;
 };
 export const AdminFoodCard = ({
   foodName,
@@ -38,71 +41,71 @@ export const AdminFoodCard = ({
   image,
   ingredients,
   category,
- foodId,
+  foodId,
   categoryName,
-  indx,
+  getFoods,
 }: FoodsPropsType) => {
   const { newFood, setNewFood } = useNewFood();
   const [allCategory, setAllCategory] = useState<CategoryType[]>([]);
-  const [selectedCatName,setselectedCatName]=useState<string>("")
-  const [showAlert,setShowAlert]=useState<boolean>(false)
+  const [selectedCatName, setselectedCatName] = useState<string>("");
   const getCategory = async () => {
     const response = await axios.get("http://localhost:3001/category");
     setAllCategory(response.data.categories);
   };
- 
-  useEffect(() => {
-    getCategory();
-  }, []);
 
-      const updateFood = async () => {
-        try {
-          const response = await axios.put(`http://localhost:3001/food/${newFood.foodId}`, { 
-            foodName: newFood.foodName,
-            price: newFood.price,
-            image: newFood.image,
-            ingredients: newFood.ingredients,
-            categoryId: newFood.category,
-            
-
-          });
-        } catch (error) {
-          console.error("amjiltgui", error);
+  const updateFood = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3001/food/${newFood.foodId}`,
+        {
+          foodName: newFood.foodName,
+          price: newFood.price,
+          image: newFood.image,
+          ingredients: newFood.ingredients,
+          categoryId: newFood.category,
         }
-      };
-      
+      );
+      await getFoods();
+    } catch (error) {
+      console.error("amjiltgui", error);
+    }
+  };
+
   const deleteFood = async () => {
-  try {
-    const response = await axios.delete("http://localhost:3001/food", {
-      data: { _id: newFood.foodId }
-    });
-    setShowAlert(true); 
-  } catch (error) {
-    console.error("amjiltgui", error);
-  }
-};
-  
+    try {
+      const response = await axios.delete("http://localhost:3001/food", {
+        data: { _id: newFood.foodId },
+      });
+
+      await getFoods();
+    } catch (error) {
+      console.error("amjiltgui", error);
+    }
+  };
+
   return (
-    <div
-     
-      className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4"
-    >
+    <div className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4">
       <img className="h-[200px] rounded-xl  " src={image}></img>
       <div className="flex flex-row  justify-between">
         <p className="font-bold text-red-300 ">{foodName}</p>
         <p>{price}</p>
-
       </div>
       <p className="text-sm">{ingredients}</p>
       <div className="absolute left-[70%] top-[40%]">
         <Dialog>
-      <DialogTrigger onClick={()=>{const newvalue = { ...newFood };
-                          newvalue.image = image;
-                          newvalue.foodName=foodName
-                          newvalue.ingredients=ingredients
-                          newvalue.price=price ? price:0
-                          newvalue.foodId=foodId
-                          setNewFood(newvalue)}} className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4 ">
+          <DialogTrigger
+            onClick={() => {
+              getCategory();
+              const newvalue = { ...newFood };
+              newvalue.image = image;
+              newvalue.foodName = foodName;
+              newvalue.ingredients = ingredients;
+              newvalue.price = price ? price : 0;
+              newvalue.foodId = foodId;
+              setNewFood(newvalue);
+            }}
+            className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4 "
+          >
             <Edit2Icon size={18} />
           </DialogTrigger>
 
@@ -129,25 +132,25 @@ export const AdminFoodCard = ({
                       Dish category
                       <select
                         onChange={(e) => {
-                          setselectedCatName( e.target.value);
+                          setselectedCatName(e.target.value);
                           const newvalue = { ...newFood };
-                           newvalue.category =allCategory.filter((item)=>{return item.categoryName==e.target.value})?.[0]._id
-                         
-                            
-                        
-                          setNewFood(newvalue)
-                        
-                          
+                          newvalue.category = allCategory.filter((item) => {
+                            return item.categoryName == e.target.value;
+                          })?.[0]._id;
+
+                          setNewFood(newvalue);
                         }}
-                        value={ 
-                          selectedCatName!==""
+                        value={
+                          selectedCatName !== ""
                             ? selectedCatName
                             : categoryName
                         }
                         className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
                       >
                         {allCategory.map((item, index) => {
-                          return <option  key={index}>{item.categoryName}</option>;
+                          return (
+                            <option key={index}>{item.categoryName}</option>
+                          );
                         })}
                       </select>
                     </div>
@@ -173,7 +176,7 @@ export const AdminFoodCard = ({
                         newvalue.price = parseInt(e.target.value);
                         setNewFood(newvalue);
                       }}
-                      value={newFood.price ?newFood.price:0}
+                      value={newFood.price ? newFood.price : 0}
                       placeholder="Enter price"
                       className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
                     ></input>
@@ -190,9 +193,11 @@ export const AdminFoodCard = ({
                       />
                       {newFood.image && (
                         <button
-                          onClick={()=>{const newvalue = { ...newFood };
-                          newvalue.image = "";
-                          setNewFood(newvalue)}}
+                          onClick={() => {
+                            const newvalue = { ...newFood };
+                            newvalue.image = "";
+                            setNewFood(newvalue);
+                          }}
                           className="text-black absolute w-4 h-4 flex justify-center items-center bg-white rounded-full z-10 left-[90%] bottom-[65%]"
                         >
                           <X />
@@ -205,14 +210,15 @@ export const AdminFoodCard = ({
                         <label htmlFor="insert-img"></label>
                       </div>
 
-                      <input 
-                       onChange={(e) => {
-                        const newvalue = { ...newFood };
-                        const newImage= e.target.files?.[0]
-                        if(newImage){newvalue.image = URL.createObjectURL(newImage);}
-                        setNewFood(newvalue);
-            
-                      }}
+                      <input
+                        onChange={(e) => {
+                          const newvalue = { ...newFood };
+                          const newImage = e.target.files?.[0];
+                          if (newImage) {
+                            newvalue.image = URL.createObjectURL(newImage);
+                          }
+                          setNewFood(newvalue);
+                        }}
                         type="file"
                         id="insert-img"
                         className="w-[288px] h-[90px] p-3 bg-[#f1f2f6] border-0 opacity-0 absolute"
@@ -221,13 +227,16 @@ export const AdminFoodCard = ({
                   </div>
 
                   <div className="w-full flex flex-row justify-between">
-                    <TrashIcon onClick={()=>{deleteFood()}} className="text-red-500"/>
+                    <TrashIcon
+                      onClick={() => {
+                        deleteFood();
+                      }}
+                      className="text-red-500"
+                    />
                     <button
                       onClick={() => {
-                        
                         updateFood();
-                        console.log(newFood )
-                        
+                        console.log(newFood);
                       }}
                       className="flex w-[126px] h-10 justify-center items-center bg-black text-white rounded-xl"
                     >
