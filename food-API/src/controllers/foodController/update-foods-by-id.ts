@@ -1,8 +1,9 @@
 import { foodModel } from "../../models/food.model";
 
 export const updateFoodController = async (req, res) => {
-  const { _id, foodName, price, image, ingredients, categoryId } = req.body;
-  await foodModel.findByIdAndUpdate(_id, {
+  const { id } = req.params
+  const { foodName, price, image, ingredients, categoryId } = req.body;
+  await foodModel.findByIdAndUpdate(id, {
     category: categoryId,
     foodName,
     price,

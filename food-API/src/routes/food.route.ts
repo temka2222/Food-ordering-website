@@ -4,13 +4,14 @@ import { updateFoodController } from "../controllers/foodController/update-foods
 import { deleteteFoodController } from "../controllers/foodController/delete-food-by-id";
 import { getFoodsBycategory } from "../controllers/foodController/get-foods-by-category";
 import { getCountFoodsBycategory } from "../controllers/foodController/count-foods-category";
+import { getFoodController } from "../controllers/foodController/get-food-by-id";
 
 const foodRouter = Router();
 
 foodRouter
   .get("/", getFoodsBycategory)
   .post("/", createFoodController)
-  .put("/", updateFoodController)
+  .put("/:id", updateFoodController)
   .delete("/", deleteteFoodController)
   .get("/count", getCountFoodsBycategory);
 

@@ -14,6 +14,7 @@ export type CategoryType = {
   updatedAt: string;
 };
 export type FoodsType = {
+  _id:string,
   foodName: string;
   price: number;
   image: string;

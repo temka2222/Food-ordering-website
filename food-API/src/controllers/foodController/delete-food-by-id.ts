@@ -1,8 +1,8 @@
 import { foodModel } from "../../models/food.model";
 
 export const deleteteFoodController = async (req, res) => {
-  const { id } = req.body;
-  await foodModel.findByIdAndDelete(id);
+  const { _id } = req.body;
+  await foodModel.findByIdAndDelete(_id);
 
   return res.status(201).json({ message: "amjilttai" });
 };
