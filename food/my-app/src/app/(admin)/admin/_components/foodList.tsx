@@ -11,8 +11,9 @@ import { ImageIcon, PlusIcon } from "lucide-react";
 import { AddNewFood } from "./addNewFood";
 export type FoodsListProps = {
   categoryId: string | "";
+  getCategory: () => Promise<void>;
 };
-export const FoodList = ({ categoryId }: FoodsListProps) => {
+export const FoodList = ({ categoryId, getCategory }: FoodsListProps) => {
   const [foods, setFoods] = useState<FoodsType[]>([]);
 
   const getFoods = async () => {
@@ -39,24 +40,24 @@ export const FoodList = ({ categoryId }: FoodsListProps) => {
           {categoryId !== "" &&
             foods?.map((item, indx) => {
               return (
-                <div key={indx} className="border-solid border rounded-xl">
+                <div key={item._id} className="border-solid border rounded-xl">
                   <AdminFoodCard
-                    foodName={item.foodName}
+                    name={item.foodName}
                     price={item.price}
                     image={item.image}
                     ingredients={item.ingredients}
-                    category={item.category}
                     foodId={item._id}
-                    indx={indx}
                     categoryName={item.category.categoryName}
                     getFoods={getFoods}
+                    getCategory={getCategory}
+                    categoryId={categoryId}
                   />
                 </div>
               );
             })}
         </div>
       </div>
-      {categoryId === "" && <AllFoodList />}
+      {categoryId === "" && <AllFoodList getCategory={getCategory} />}
     </div>
   );
 };

@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { UserProvider } from "./(auth)/sign-up/_components/userValueProvider";
-import { FoodsProvider } from "./_components/foodsProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-fit`}
       >
         <UserProvider>
-          <FoodsProvider>
-            <div className="m-auto w-full max-w-[1440px]">{children}</div>
-          </FoodsProvider>
+          <div className="m-auto w-full max-w-[1440px]">{children}</div>
         </UserProvider>
       </body>
     </html>

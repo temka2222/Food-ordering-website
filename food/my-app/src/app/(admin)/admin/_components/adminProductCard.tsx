@@ -1,6 +1,6 @@
 "use client";
 import { CategoryType } from "@/app/(user)/page";
-import { useNewFood } from "@/app/_components/foodsProvider";
+
 import { useAlert } from "@/app/_components/showAlertProvider";
 import {
   Dialog,
@@ -12,60 +12,60 @@ import {
 } from "@/components/ui/dialog";
 import { Close, DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
-import {
-  DeleteIcon,
-  DoorClosedIcon,
-  Edit2Icon,
-  ImageIcon,
-  RecycleIcon,
-  TrashIcon,
-  X,
-} from "lucide-react";
+import { Edit2Icon, ImageIcon, TrashIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DeleteFood } from "./deleteFood";
+import { Input } from "@/components/ui/input";
+import { CategorySelect } from "./CategorySelect";
 
 type FoodsPropsType = {
+  foodId: string;
+  name: string;
+  price: number;
+  image: string;
+  categoryName: string;
+  ingredients: string;
+  categoryId: string;
+  getCategory: () => Promise<void>;
+  getFoods: () => Promise<void>;
+};
+export type newFoodsType = {
+  foodId: string;
   foodName: string;
   price: number;
   image: string;
   ingredients: string;
-  category: CategoryType;
-  categoryName: string;
-  foodId: string;
-  indx: number;
-  getFoods: () => Promise<void>;
+  category: string;
 };
+
 export const AdminFoodCard = ({
-  foodName,
+  name,
   price,
   image,
   ingredients,
-  category,
   foodId,
   categoryName,
+  categoryId,
   getFoods,
+  getCategory,
 }: FoodsPropsType) => {
-  const { newFood, setNewFood } = useNewFood();
-  const [allCategory, setAllCategory] = useState<CategoryType[]>([]);
-  const [selectedCatName, setselectedCatName] = useState<string>("");
-  const getCategory = async () => {
-    const response = await axios.get("http://localhost:3001/category");
-    setAllCategory(response.data.categories);
-  };
+  const [newFoodName, setNewFoodName] = useState(name);
+  const [newPrice, setNewPrice] = useState(price);
+  const [newIngredients, setNewIngredients] = useState(ingredients);
+  const [newImg, setNewImg] = useState(image);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(categoryId);
 
   const updateFood = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:3001/food/${newFood.foodId}`,
-        {
-          foodName: newFood.foodName,
-          price: newFood.price,
-          image: newFood.image,
-          ingredients: newFood.ingredients,
-          categoryId: newFood.category,
-        }
-      );
+      const response = await axios.put(`http://localhost:3001/food/${foodId}`, {
+        foodName: newFoodName,
+        price: newPrice,
+        image: newImg,
+        ingredients: newIngredients,
+        categoryId: selectedCategoryId,
+      });
       await getFoods();
+      await getCategory();
     } catch (error) {
       console.error("amjiltgui", error);
     }
@@ -74,7 +74,7 @@ export const AdminFoodCard = ({
   const deleteFood = async () => {
     try {
       const response = await axios.delete("http://localhost:3001/food", {
-        data: { _id: newFood.foodId },
+        data: { _id: foodId },
       });
 
       await getFoods();
@@ -87,25 +87,13 @@ export const AdminFoodCard = ({
     <div className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4">
       <img className="h-[200px] rounded-xl  " src={image}></img>
       <div className="flex flex-row  justify-between">
-        <p className="font-bold text-red-300 ">{foodName}</p>
+        <p className="font-bold text-red-300 ">{name}asdasd</p>
         <p>{price}</p>
       </div>
       <p className="text-sm">{ingredients}</p>
       <div className="absolute left-[70%] top-[40%]">
         <Dialog>
-          <DialogTrigger
-            onClick={() => {
-              getCategory();
-              const newvalue = { ...newFood };
-              newvalue.image = image;
-              newvalue.foodName = foodName;
-              newvalue.ingredients = ingredients;
-              newvalue.price = price ? price : 0;
-              newvalue.foodId = foodId;
-              setNewFood(newvalue);
-            }}
-            className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4 "
-          >
+          <DialogTrigger className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4 ">
             <Edit2Icon size={18} />
           </DialogTrigger>
 
@@ -117,71 +105,40 @@ export const AdminFoodCard = ({
                   <div className="flex flex-col gap-6 ">
                     <div className="flex-1 flex flex-row gap-6 text-nowrap justify-between items-center rounded-xl">
                       Dish name
-                      <input
-                        value={newFood.foodName}
-                        onChange={(e) => {
-                          const newvalue = { ...newFood };
-                          newvalue.foodName = e.target.value;
-                          setNewFood(newvalue);
-                        }}
+                      <Input
+                        value={newFoodName}
+                        name="foodName"
+                        onChange={(e) => setNewFoodName(e.target.value)}
                         placeholder="Type food name"
                         className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
-                      ></input>
+                      ></Input>
                     </div>
-                    <div className="flex-1 flex flex-row gap-6 text-nowrap justify-between items-center  ">
-                      Dish category
-                      <select
-                        onChange={(e) => {
-                          setselectedCatName(e.target.value);
-                          const newvalue = { ...newFood };
-                          newvalue.category = allCategory.filter((item) => {
-                            return item.categoryName == e.target.value;
-                          })?.[0]._id;
-
-                          setNewFood(newvalue);
-                        }}
-                        value={
-                          selectedCatName !== ""
-                            ? selectedCatName
-                            : categoryName
-                        }
-                        className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
-                      >
-                        {allCategory.map((item, index) => {
-                          return (
-                            <option key={index}>{item.categoryName}</option>
-                          );
-                        })}
-                      </select>
-                    </div>
+                    <CategorySelect
+                      setSelectedCategoryId={setSelectedCategoryId}
+                      categoryName={categoryName}
+                    />
                   </div>
                   <div className="w-full flex flex-row justify-between">
                     <p>Ingredients</p>
-                    <input
-                      onChange={(e) => {
-                        const newvalue = { ...newFood };
-                        newvalue.ingredients = e.target.value;
-                        setNewFood(newvalue);
-                      }}
-                      value={newFood.ingredients}
+                    <Input
+                      onChange={(e) => setNewIngredients(e.target.value)}
+                      value={newIngredients}
+                      name="ingredients"
                       placeholder="List ingredients..."
                       className="w-[288px] min-h-[90px] border-solid border p-1 rounded-sm"
-                    ></input>
+                    />
                   </div>
                   <div className="flex-1 flex flex-row gap-6 text-nowrap justify-between items-center rounded-xl">
                     <p>Price</p>
-                    <input
-                      onChange={(e) => {
-                        const newvalue = { ...newFood };
-                        newvalue.price = parseInt(e.target.value);
-                        setNewFood(newvalue);
-                      }}
-                      value={newFood.price ? newFood.price : 0}
+                    <Input
+                      onChange={(e) => setNewPrice(Number(e.target.value))}
+                      name="price"
+                      value={newPrice}
                       placeholder="Enter price"
                       className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
-                    ></input>
+                    />
                   </div>
-                  <div className="w-full flex flex-row justify-between items-center">
+                  {/* <div className="w-full flex flex-row justify-between items-center">
                     <p>Image</p>
 
                     <div className="flex  flex-col relative w-[288px] h-[90px] p-3 bg-[#ecedf1] justify-center items-center rounded-sm">
@@ -189,7 +146,7 @@ export const AdminFoodCard = ({
                         className={` w-[100%] h-[100%] ${
                           newFood.image ? "z-10 " : "z-0"
                         } `}
-                        src={newFood.image}
+                        src={image}
                       />
                       {newFood.image && (
                         <button
@@ -210,7 +167,7 @@ export const AdminFoodCard = ({
                         <label htmlFor="insert-img"></label>
                       </div>
 
-                      <input
+                      <Input
                         onChange={(e) => {
                           const newvalue = { ...newFood };
                           const newImage = e.target.files?.[0];
@@ -224,7 +181,7 @@ export const AdminFoodCard = ({
                         className="w-[288px] h-[90px] p-3 bg-[#f1f2f6] border-0 opacity-0 absolute"
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="w-full flex flex-row justify-between">
                     <TrashIcon
@@ -236,7 +193,6 @@ export const AdminFoodCard = ({
                     <button
                       onClick={() => {
                         updateFood();
-                        console.log(newFood);
                       }}
                       className="flex w-[126px] h-10 justify-center items-center bg-black text-white rounded-xl"
                     >

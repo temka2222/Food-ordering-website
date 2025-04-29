@@ -7,13 +7,14 @@ import { CategoryType, FoodsType } from "@/app/(user)/page";
 import { AdminFoodCard } from "./adminProductCard";
 import { AddNewFood } from "./addNewFood";
 type FoodsListProps = {
-  categoryId: string | "";
+  getCategory: () => Promise<void>;
 };
 
-export const AllFoodList = () => {
+export const AllFoodList = ({ getCategory }: FoodsListProps) => {
   const [foods, setFoods] = useState<FoodsType[]>([]);
   const [category, setCategory] = useState<CategoryType[]>([]);
   const [foodId, setFoodId] = useState<number>(0);
+  const categoryId = "";
   const getFoods = async () => {
     const response = await axios.get(
       `http://localhost:3001/food?categoryId=${""}`
@@ -53,15 +54,15 @@ export const AllFoodList = () => {
                 ?.map((item, indx) => (
                   <div key={indx} className="border-solid border rounded-2xl">
                     <AdminFoodCard
-                      foodName={item.foodName}
+                      name={item.foodName}
                       price={item.price}
                       image={item.image}
                       ingredients={item.ingredients}
-                      category={item.category}
                       foodId={item._id}
-                      indx={indx}
                       categoryName={item.category.categoryName}
                       getFoods={getFoods}
+                      getCategory={getCategory}
+                      categoryId={categoryId}
                     />
                   </div>
                 ))}

@@ -22,9 +22,6 @@ export const AdminCategories = () => {
     setCategory(response.data.categories);
   };
 
-  useEffect(() => {
-    getCategory();
-  }, []);
   const addCategory = async () => {
     try {
       const response = await axios.post("http://localhost:3001/category", {
@@ -35,6 +32,9 @@ export const AdminCategories = () => {
       console.error("amjiltgui", error);
     }
   };
+  useEffect(() => {
+    getCategory();
+  }, []);
   return (
     <div className="w-full">
       <div className="grid grid-cols-7 lg:grid-cols-5 gap-4 p-6 bg-white rounded-xl justify-between overflow-visible">
@@ -99,7 +99,7 @@ export const AdminCategories = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <FoodList categoryId={selectedCategory} />
+      <FoodList categoryId={selectedCategory} getCategory={getCategory} />
     </div>
   );
 };

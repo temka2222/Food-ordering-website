@@ -11,13 +11,20 @@ import { FoodsListProps } from "./foodList";
 import axios from "axios";
 import { CategoryType } from "@/app/(user)/page";
 import { useEffect, useState } from "react";
-import { useNewFood } from "@/app/_components/foodsProvider";
+import { newFoodsType } from "./adminProductCard";
 type NewFoodPropsType = {
   categoryId: string;
   getFoods: () => Promise<void>;
 };
 export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
-  const { newFood, setNewFood } = useNewFood();
+  const [newFood, setNewFood] = useState<newFoodsType>({
+    foodId: "",
+    foodName: "",
+    price: 0,
+    image: "",
+    ingredients: "",
+    category: "",
+  });
   const [category, setCategory] = useState<CategoryType[]>([]);
   const getCategory = async () => {
     const response = await axios.get(
