@@ -17,6 +17,7 @@ export const AdminCategories = () => {
   const [category, setCategory] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [newCategory, setNewCategory] = useState<string>("");
+
   const getCategory = async () => {
     const response = await axios.get("http://localhost:3001/category");
     setCategory(response.data.categories);

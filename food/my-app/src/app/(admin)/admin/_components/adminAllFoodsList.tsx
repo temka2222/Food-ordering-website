@@ -12,9 +12,9 @@ type FoodsListProps = {
 
 export const AllFoodList = ({ getCategory }: FoodsListProps) => {
   const [foods, setFoods] = useState<FoodsType[]>([]);
-  const [category, setCategory] = useState<CategoryType[]>([]);
+  const [allCategory, setAllCategory] = useState<CategoryType[]>([]);
   const [foodId, setFoodId] = useState<number>(0);
-  const categoryId = "";
+
   const getFoods = async () => {
     const response = await axios.get(
       `http://localhost:3001/food?categoryId=${""}`
@@ -22,7 +22,7 @@ export const AllFoodList = ({ getCategory }: FoodsListProps) => {
     setFoods(response.data.foods);
 
     const responseCategory = await axios.get("http://localhost:3001/category");
-    setCategory(responseCategory.data.categories);
+    setAllCategory(responseCategory.data.categories);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const AllFoodList = ({ getCategory }: FoodsListProps) => {
 
   return (
     <div className="w-full">
-      {category.map((element, index) => {
+      {allCategory.map((element, index) => {
         return (
           <div key={element._id} className="w-full flex flex-col gap-6 ">
             <p className="text-black font-bold text-xl  ">
@@ -52,7 +52,10 @@ export const AllFoodList = ({ getCategory }: FoodsListProps) => {
                   (itm) => itm.category.categoryName === element.categoryName
                 )
                 ?.map((item, indx) => (
-                  <div key={indx} className="border-solid border rounded-2xl">
+                  <div
+                    key={item._id}
+                    className="border-solid border rounded-2xl"
+                  >
                     <AdminFoodCard
                       name={item.foodName}
                       price={item.price}
@@ -62,7 +65,7 @@ export const AllFoodList = ({ getCategory }: FoodsListProps) => {
                       categoryName={item.category.categoryName}
                       getFoods={getFoods}
                       getCategory={getCategory}
-                      categoryId={categoryId}
+                      categoryId={element._id}
                     />
                   </div>
                 ))}

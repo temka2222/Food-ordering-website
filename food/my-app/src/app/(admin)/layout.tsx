@@ -4,6 +4,7 @@ import { Menu } from "./admin/_components/adminMenu";
 import { ShieldUser } from "lucide-react";
 import { SelectedMenuProvider } from "../_components/selectedMenuProvider";
 import { ShowAlertProvider } from "../_components/showAlertProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <div className=" flex justify-end pr-18 pl-10 pt-6 pb-6  ">
             <ShieldUser />
           </div>
+          <Toaster position="top-center" />
           <div className="flex-1 overflow-y-auto ">{children}</div>
         </div>
       </div>
