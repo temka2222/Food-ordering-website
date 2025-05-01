@@ -44,8 +44,8 @@ export default function SearchCategory() {
                   image={item.image}
                   ingredients={item.ingredients}
                   category={item.category}
-                  setFoodId={setFoodId}
-                  indx={indx}
+                 
+                 
                 />
               </div>
             );

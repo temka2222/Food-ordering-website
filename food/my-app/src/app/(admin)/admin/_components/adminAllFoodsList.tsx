@@ -29,50 +29,52 @@ export const AllFoodList = ({ getCategory }: FoodsListProps) => {
     getFoods();
   }, []);
 
-  return (
-    <div className="w-full">
-      {allCategory.map((element, index) => {
-        return (
-          <div key={element._id} className="w-full flex flex-col gap-6 ">
-            <p className="text-black font-bold text-xl  ">
-              {foods?.filter(
-                (cat) => cat.category.categoryName === element.categoryName
-              ).length > 0
-                ? element.categoryName
-                : ""}
-            </p>
-            <div key={index} className=" w-full grid grid-cols-4 gap-9">
-              {foods?.filter(
-                (cat) => cat.category.categoryName === element.categoryName
-              ).length > 0 && (
-                <AddNewFood categoryId={element._id} getFoods={getFoods} />
-              )}
-              {foods
-                ?.filter(
-                  (itm) => itm.category.categoryName === element.categoryName
-                )
-                ?.map((item, indx) => (
-                  <div
-                    key={item._id}
-                    className="border-solid border rounded-2xl"
-                  >
-                    <AdminFoodCard
-                      name={item.foodName}
-                      price={item.price}
-                      image={item.image}
-                      ingredients={item.ingredients}
-                      foodId={item._id}
-                      categoryName={item.category.categoryName}
-                      getFoods={getFoods}
-                      getCategory={getCategory}
-                      categoryId={element._id}
-                    />
-                  </div>
-                ))}
-            </div>
+ return (
+  <div className="w-full flex flex-col gap-14">
+    {allCategory.map((element) => {
+      const filteredFoods = foods.filter(
+        (cat) => cat.category.categoryName === element.categoryName
+      );
+
+      if (filteredFoods.length === 0) return null;
+
+      return (
+        <div
+          key={element._id}
+          className="w-full bg-white p-8 rounded-3xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+        >
+ <div className="mb-6 border-gray-300 pb-3 flex flex-row gap-2 items-end ">
+            <h2 className="text-xl font-bold text-black ">
+              {element.categoryName}
+            </h2>
+            <span className="text-sm text-gray-400">
+              {filteredFoods.length} dish{filteredFoods.length > 1 ? "es" : ""}
+            </span>
           </div>
-        );
-      })}
-    </div>
-  );
+
+          <div className="grid grid-cols-4 gap-8">
+            <AddNewFood categoryId={element._id} getFoods={getFoods} />
+            {filteredFoods.map((item) => (
+              <div key={item._id} className="border rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                <AdminFoodCard
+                  name={item.foodName}
+                  price={item.price}
+                  image={item.image}
+                  ingredients={item.ingredients}
+                  foodId={item._id}
+                  categoryName={item.category.categoryName}
+                  getFoods={getFoods}
+                  getCategory={getCategory}
+                  categoryId={element._id}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+);
+
+
 };

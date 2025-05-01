@@ -26,23 +26,23 @@ export const CategorySelect = ({
     getCategory();
   }, []);
 
-  return (
-    <div className="flex-1 flex flex-row gap-6 text-nowrap justify-between items-center  ">
-      Dish category
-      <Select onValueChange={(value) => setSelectedCategoryId(value)}>
-        <SelectTrigger className="w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm">
-          <SelectValue placeholder={categoryName} />
-        </SelectTrigger>
-        <SelectContent>
-          {allCategory.map((item, index) => (
-            <SelectItem key={index} value={item._id}>
-              {item.categoryName}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
+ return (
+  <div className="flex justify-between items-center">
+    <label className="text-sm font-medium text-gray-700">Dish Category</label>
+    <Select onValueChange={(value) => setSelectedCategoryId(value)}>
+      <SelectTrigger className="w-[300px] px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none">
+        <SelectValue placeholder={categoryName} />
+      </SelectTrigger>
+      <SelectContent className="bg-white border border-gray-200 rounded-md shadow-md">
+        {allCategory.map((item, index) => (
+          <SelectItem key={index} value={item._id} className="cursor-pointer hover:bg-gray-100">
+            {item.categoryName}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+);
+
 };
-{
-}
+

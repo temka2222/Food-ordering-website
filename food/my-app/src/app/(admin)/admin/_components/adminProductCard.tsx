@@ -1,7 +1,6 @@
 "use client";
 import { CategoryType } from "@/app/(user)/page";
 
-import { useAlert } from "@/app/_components/showAlertProvider";
 import {
   Dialog,
   DialogContent,
@@ -18,13 +17,13 @@ import { DeleteFood } from "./deleteFood";
 import { Input } from "@/components/ui/input";
 import { CategorySelect } from "./CategorySelect";
 import { toast } from "sonner";
-import { FoodImage } from "./foodImage";
+import { FoodImage } from "./updateFoodImage";
 
 type FoodsPropsType = {
   foodId: string;
   name: string;
   price: number;
-  image: File | undefined;
+  image: string;
   categoryName: string;
   ingredients: string;
   categoryId: string;
@@ -35,11 +34,12 @@ export type newFoodsType = {
   foodId: string;
   foodName: string;
   price: number;
-  image?: File;
+  image: string;
   ingredients: string;
   category: string;
 };
-
+  export const UPLOAD_PRESET = "temuulen";
+   export const CLOUD_NAME = "dpmo1etqt";
 export const AdminFoodCard = ({
   name,
   price,
@@ -54,18 +54,16 @@ export const AdminFoodCard = ({
   const [newFoodName, setNewFoodName] = useState(name);
   const [newPrice, setNewPrice] = useState(price);
   const [newIngredients, setNewIngredients] = useState(ingredients);
-  const [newImg, setNewImg] = useState<File | undefined>(image);
-
+  const [newImg, setNewImg] = useState<File | undefined>();
+ const [uploadedUrl,SetUploadedUrl]=useState(image)
   const [selectedCategoryId, setSelectedCategoryId] = useState(categoryId);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
-  const UPLOUD_PRESSET = "temuulen";
-  const CLOUD_NAME = "dpmo1etqt";
   const uploadImage = async (file: File | undefined) => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", UPLOUD_PRESSET);
+    formData.append("upload_preset", UPLOAD_PRESET);
     try {
       const responseImg = await axios.post(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
@@ -81,16 +79,16 @@ export const AdminFoodCard = ({
       console.log(error);
     }
   };
-  const updateFood = async () => {
+ const updateFood = async (uploadedUrl:string) => {
     try {
       setLoading(true);
-      const response = await axios.put(`http://localhost:3001/food/${foodId}`, {
-        foodName: newFoodName,
-        price: newPrice,
-        image: newImg,
-        ingredients: newIngredients,
-        categoryId: selectedCategoryId,
-      });
+        const response = await axios.put(`http://localhost:3001/food/${foodId}`, {
+          foodName: newFoodName,
+          price: newPrice,
+         image: uploadedUrl ,
+          ingredients: newIngredients,
+          categoryId: selectedCategoryId,
+        });
 
       await getFoods();
 
@@ -132,7 +130,7 @@ export const AdminFoodCard = ({
         foodName: name,
         price: price,
         category: categoryId,
-        image: image,
+        image: uploadedUrl,
         ingredients: ingredients,
       });
       await getFoods();
@@ -146,92 +144,100 @@ export const AdminFoodCard = ({
   };
 
   return (
-    <div className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4">
-      <img className="h-[200px] rounded-xl  " src={image}></img>
-      <div className="flex flex-row  justify-between">
-        <p className="font-bold text-red-300 object-contain">{name}</p>
-        <p>{price}</p>
-      </div>
-      <p className="text-sm">{ingredients}</p>
-      <div className="absolute left-[65%] top-[40%]">
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4 ">
-            <Edit2Icon size={18} />
-          </DialogTrigger>
+    <div
+  className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4  "
+>
+  <img
+    className="h-[200px] w-full object-cover rounded-xl"
+    src={image}
+    alt="food"
+  />
+  <div className="flex flex-row justify-between items-center">
+    <p className="font-semibold text-red-400 text-lg truncate">{name}</p>
+    <p className="text-gray-800 font-medium">{price}₮</p>
+  </div>
+  <p className="text-sm text-gray-600 line-clamp-2">{ingredients}</p>
+  <div className="absolute left-[65%] top-[40%]">
+       <Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4">
+    <Edit2Icon size={18} />
+  </DialogTrigger>
 
-          <DialogContent className="w-full h-[600px] ">
-            <DialogHeader>
-              <DialogTitle className="pb-10">Dishes info</DialogTitle>
-              <DialogDescription>
-                <div className="flex flex-col w-[462px] h-[272px]  gap-10 justify-center pt-40">
-                  <div className="flex flex-col gap-6 ">
-                    <div className="flex-1 flex flex-row gap-6 text-nowrap justify-between items-center rounded-xl">
-                      Dish name
-                      <Input
-                        value={newFoodName}
-                        name="foodName"
-                        onChange={(e) => setNewFoodName(e.target.value)}
-                        placeholder="Type food name"
-                        className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
-                      ></Input>
-                    </div>
-                    <CategorySelect
-                      setSelectedCategoryId={setSelectedCategoryId}
-                      categoryName={categoryName}
-                    />
-                  </div>
-                  <div className="w-full flex flex-row justify-between">
-                    <p>Ingredients</p>
-                    <Input
-                      onChange={(e) => setNewIngredients(e.target.value)}
-                      value={newIngredients}
-                      name="ingredients"
-                      placeholder="List ingredients..."
-                      className="w-[288px] min-h-[90px] border-solid border p-1 rounded-sm"
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-row gap-6 text-nowrap justify-between items-center rounded-xl">
-                    <p>Price</p>
-                    <Input
-                      onChange={(e) => setNewPrice(Number(e.target.value))}
-                      name="price"
-                      value={newPrice}
-                      placeholder="Enter price"
-                      className=" w-[288px] pr-3 pl-3 pt-2 pb-2 border-solid border rounded-sm"
-                    />
-                  </div>
-                  <FoodImage
-                    image={image}
-                    newImg={newImg}
-                    setNewImg={setNewImg}
-                  />
+  <DialogContent className="w-full max-w-[600px] px-8 py-10 rounded-xl bg-white shadow-md">
+    <DialogHeader>
+      <DialogTitle className="text-2xl font-semibold text-gray-800 mb-6">
+        Dishes Info
+      </DialogTitle>
 
-                  <div className="w-full flex flex-row justify-between">
-                    <TrashIcon
-                      onClick={() => {
-                        deleteFood();
-                      }}
-                      className="text-red-500"
-                    />
-                    <button
-                      disabled={loading}
-                      onClick={() => {
-                        updateFood();
-                      }}
-                      className="flex w-[126px] h-10 justify-center items-center bg-black text-white rounded-xl"
-                    >
-                      {loading ? (
-                        <Loader size={18} className="animate-spin" />
-                      ) : (
-                        "Save changes"
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+      <DialogDescription>
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <label className="text-sm font-medium text-gray-700">Dish Name</label>
+            <Input
+              value={newFoodName}
+              name="foodName"
+              onChange={(e) => setNewFoodName(e.target.value)}
+              placeholder="Type food name"
+              className="w-[300px] px-3 py-2 border border-gray-300 rounded-md"
+            />
+          </div>
+
+          <CategorySelect
+            setSelectedCategoryId={setSelectedCategoryId}
+            categoryName={categoryName}
+          />
+
+          <div className="flex justify-between items-start">
+            <label className="text-sm font-medium text-gray-700">Ingredients</label>
+            <Input
+              onChange={(e) => setNewIngredients(e.target.value)}
+              value={newIngredients}
+              name="ingredients"
+              placeholder="List ingredients..."
+              className="w-[300px] min-h-[90px] px-3 py-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="flex justify-between items-center">
+            <label className="text-sm font-medium text-gray-700">Price</label>
+            <Input
+              onChange={(e) => setNewPrice(Number(e.target.value))}
+              name="price"
+              value={newPrice}
+              placeholder="Enter price"
+              className="w-[300px] px-3 py-2 border border-gray-300 rounded-md"
+            />
+          </div>
+
+          <FoodImage image={image} newImg={newImg} setNewImg={setNewImg} />
+
+          <div className="flex justify-between items-center pt-4">
+            <TrashIcon
+              onClick={deleteFood}
+              className="text-red-500 cursor-pointer"
+            />
+            <button
+              disabled={loading}
+              onClick={async () => {
+                const url = await uploadImage(newImg);
+                if (url) {
+                  updateFood(url);
+                }
+              }}
+              className="w-[140px] h-10 flex justify-center items-center bg-black text-white rounded-md"
+            >
+              {loading ? (
+                <Loader size={18} className="animate-spin" />
+              ) : (
+                "Save Changes"
+              )}
+            </button>
+          </div>
+        </div>
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+
       </div>
     </div>
   );

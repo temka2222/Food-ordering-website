@@ -1,5 +1,5 @@
 import { CategoryType } from "../(user)/page";
-import { useFoods } from "./foodsProvider";
+
 
 type FoodsType = {
   foodName: string;
@@ -7,8 +7,7 @@ type FoodsType = {
   image: string;
   ingredients: string;
   category: CategoryType;
-  setFoodId: (value: number) => void;
-  indx: number;
+
 };
 export const FoodCard = ({
   foodName,
@@ -16,22 +15,24 @@ export const FoodCard = ({
   image,
   ingredients,
   category,
-  setFoodId,
-  indx,
 }: FoodsType) => {
-  return (
-    <div
-      onClick={() => {
-        setFoodId(indx);
-      }}
-      className="flex h-[360px] flex-col bg-white rounded-2xl gap-5 p-4"
-    >
-      <img className="rounded-xl" src={image}></img>
-      <div className="flex flex-row  justify-between">
-        <p className="font-bold text-red-400 ">{foodName}</p>
-        <p className=" font-bold ">{price}</p>
+return (
+  <div className="flex flex-col bg-white rounded-2xl gap-5 p-4">
+    <div className="flex flex-col h-[360px]">
+      <img
+        className="rounded-xl w-full h-[200px] object-cover mb-4" // Зурагны өндөр
+        src={image}
+        alt={foodName}
+      />
+      <div className="flex flex-col justify-between h-full">
+        <div>
+        <p className="font-bold text-red-400 text-lg">{foodName}</p>
+        <p className="font-bold text-lg">{price}</p>
+        </div>
+        <p className="text-sm text-gray-600">{ingredients}</p>
       </div>
-      <p className="text-sm">{ingredients}</p>
     </div>
-  );
+  </div>
+);
+
 };
