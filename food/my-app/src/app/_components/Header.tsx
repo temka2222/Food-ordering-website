@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
 import { ShopCard } from "./assets/Shoppingcard";
 import { ChevronRight, MapIcon, MapPin, User2Icon } from "lucide-react";
+import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Button } from "@/components/ui/button";
+import { OrderDeatail } from "../(user)/_components/OrderDeatail";
 
 export const Header = () => {
   const { userValues, setUserValues } = useUser();
@@ -53,9 +56,17 @@ export const Header = () => {
             <ChevronRight />
           </div>
           <div>
-            <button className="bg-white pl-3 pr-3 pt-3   pb-3 rounded-full">
-              <ShopCard />
-            </button>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button
+                  variant="link"
+                  className="bg-white pl-3 pr-3 pt-3   pb-3 rounded-full"
+                >
+                  <ShopCard />
+                </Button>
+              </HoverCardTrigger>
+              <OrderDeatail />
+            </HoverCard>
           </div>
           <div className="group">
             <button className="bg-red-500 pl-2 pr-2 pt-2 pb-2 rounded-full">

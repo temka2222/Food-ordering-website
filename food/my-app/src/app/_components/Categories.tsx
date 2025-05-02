@@ -26,12 +26,12 @@ export const Categories = () => {
   }, []);
 
   return (
-    <div className="flex  flex-col gap-10 pt-4 pb-4 pr-22 pl-22 ">
+    <div className="flex flex-col gap-10 pt-4 pb-4 pr-22 pl-22   ">
       <p className="text-[#FFFFFF] font-bold text-xl">Categories</p>
 
-      <div className="pl-11 pr-11">
+      <div className="pl-11 pr-11 ">
         <Carousel>
-          <CarouselContent className="flex flex-row gap-4">
+          <CarouselContent className="flex flex-row gap-4 ">
             {category?.map((item, indx) => (
               <Link key={indx} href={`/categoryFoods?categoryId=${item._id}`}>
                 <CarouselItem
@@ -39,10 +39,10 @@ export const Categories = () => {
                     setCategoryId(item._id);
                   }}
                   key={indx}
-                  className="basis-auto"
+                  className="basis-auto "
                 >
                   <button
-                    className={`px-5 py-2 rounded-full text-black text-sm whitespace-nowrap ${
+                    className={`px-5 py-2 rounded-full text-black text-sm whitespace-nowrap  ${
                       categoryId === item._id
                         ? "bg-red-400 text-white"
                         : "bg-white"

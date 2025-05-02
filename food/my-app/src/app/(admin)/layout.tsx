@@ -2,7 +2,7 @@
 import { PropsWithChildren, useState } from "react";
 import { Menu } from "./admin/_components/adminMenu";
 import { ShieldUser } from "lucide-react";
-import { SelectedMenuProvider } from "../_components/selectedMenuProvider";
+import { SelectedMenuProvider } from "./admin/_components/selectedMenuProvider";
 import { ShowAlertProvider } from "../_components/showAlertProvider";
 import { Toaster } from "@/components/ui/sonner";
 

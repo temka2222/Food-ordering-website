@@ -1,6 +1,6 @@
 "use client";
 import { Logo } from "@/app/_components/assets/Logo";
-import { useSelectedMenu } from "@/app/_components/selectedMenuProvider";
+import { useSelectedMenu } from "@/app/(admin)/admin/_components/selectedMenuProvider";
 import {
   LayoutDashboard,
   MenuIcon,

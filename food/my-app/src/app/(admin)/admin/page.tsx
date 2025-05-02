@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { AdminCategories } from "./_components/adminCategories";
 import { FoodList } from "./_components/foodList";
-import { useSelectedMenu } from "@/app/_components/selectedMenuProvider";
+import { useSelectedMenu } from "@/app/(admin)/admin/_components/selectedMenuProvider";
 import { OrderTable } from "./_components/adminOrders";
 
 export default function Home() {

@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { CategorySelect } from "./CategorySelect";
 import { toast } from "sonner";
 import { FoodImage } from "./updateFoodImage";
+import { formatWithApostrophe } from "@/app/(user)/_components/productCard";
 
 type FoodsPropsType = {
   foodId: string;
@@ -38,8 +39,8 @@ export type newFoodsType = {
   ingredients: string;
   category: string;
 };
-  export const UPLOAD_PRESET = "temuulen";
-   export const CLOUD_NAME = "dpmo1etqt";
+export const UPLOAD_PRESET = "temuulen";
+export const CLOUD_NAME = "dpmo1etqt";
 export const AdminFoodCard = ({
   name,
   price,
@@ -55,7 +56,7 @@ export const AdminFoodCard = ({
   const [newPrice, setNewPrice] = useState(price);
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newImg, setNewImg] = useState<File | undefined>();
- const [uploadedUrl,SetUploadedUrl]=useState(image)
+  const [uploadedUrl, SetUploadedUrl] = useState(image);
   const [selectedCategoryId, setSelectedCategoryId] = useState(categoryId);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -79,16 +80,16 @@ export const AdminFoodCard = ({
       console.log(error);
     }
   };
- const updateFood = async (uploadedUrl:string) => {
+  const updateFood = async (uploadedUrl: string) => {
     try {
       setLoading(true);
-        const response = await axios.put(`http://localhost:3001/food/${foodId}`, {
-          foodName: newFoodName,
-          price: newPrice,
-         image: uploadedUrl ,
-          ingredients: newIngredients,
-          categoryId: selectedCategoryId,
-        });
+      const response = await axios.put(`http://localhost:3001/food/${foodId}`, {
+        foodName: newFoodName,
+        price: newPrice,
+        image: uploadedUrl,
+        ingredients: newIngredients,
+        categoryId: selectedCategoryId,
+      });
 
       await getFoods();
 
@@ -144,100 +145,109 @@ export const AdminFoodCard = ({
   };
 
   return (
-    <div
-  className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4  "
->
-  <img
-    className="h-[200px] w-full object-cover rounded-xl"
-    src={image}
-    alt="food"
-  />
-  <div className="flex flex-row justify-between items-center">
-    <p className="font-semibold text-red-400 text-lg truncate">{name}</p>
-    <p className="text-gray-800 font-medium">{price}₮</p>
-  </div>
-  <p className="text-sm text-gray-600 line-clamp-2">{ingredients}</p>
-  <div className="absolute left-[65%] top-[40%]">
-       <Dialog open={open} onOpenChange={setOpen}>
-  <DialogTrigger className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4">
-    <Edit2Icon size={18} />
-  </DialogTrigger>
+    <div className="flex relative h-[340px] flex-col bg-white rounded-2xl gap-5 p-4  ">
+      <img
+        className="h-[200px] w-full object-cover rounded-xl"
+        src={image}
+        alt="food"
+      />
+      <div className="flex flex-row justify-between items-center">
+        <p className="font-semibold text-red-400 text-lg truncate">{name}</p>
+        <p className="text-gray-800 font-medium">
+          {formatWithApostrophe(price)}₮
+        </p>
+      </div>
+      <p className="text-sm text-gray-600 line-clamp-2">{ingredients}</p>
+      <div className="absolute left-[65%] top-[40%]">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ml-4">
+            <Edit2Icon size={18} />
+          </DialogTrigger>
 
-  <DialogContent className="w-full max-w-[600px] px-8 py-10 rounded-xl bg-white shadow-md">
-    <DialogHeader>
-      <DialogTitle className="text-2xl font-semibold text-gray-800 mb-6">
-        Dishes Info
-      </DialogTitle>
+          <DialogContent className="w-full max-w-[600px] px-8 py-10 rounded-xl bg-white shadow-md">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold text-gray-800 mb-6">
+                Dishes Info
+              </DialogTitle>
 
-      <DialogDescription>
-        <div className="flex flex-col gap-6">
-          <div className="flex justify-between items-center">
-            <label className="text-sm font-medium text-gray-700">Dish Name</label>
-            <Input
-              value={newFoodName}
-              name="foodName"
-              onChange={(e) => setNewFoodName(e.target.value)}
-              placeholder="Type food name"
-              className="w-[300px] px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+              <DialogDescription>
+                <div className="flex flex-col gap-6">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700">
+                      Dish Name
+                    </label>
+                    <Input
+                      value={newFoodName}
+                      name="foodName"
+                      onChange={(e) => setNewFoodName(e.target.value)}
+                      placeholder="Type food name"
+                      className="w-[300px] px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
 
-          <CategorySelect
-            setSelectedCategoryId={setSelectedCategoryId}
-            categoryName={categoryName}
-          />
+                  <CategorySelect
+                    setSelectedCategoryId={setSelectedCategoryId}
+                    categoryName={categoryName}
+                  />
 
-          <div className="flex justify-between items-start">
-            <label className="text-sm font-medium text-gray-700">Ingredients</label>
-            <Input
-              onChange={(e) => setNewIngredients(e.target.value)}
-              value={newIngredients}
-              name="ingredients"
-              placeholder="List ingredients..."
-              className="w-[300px] min-h-[90px] px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex justify-between items-center">
-            <label className="text-sm font-medium text-gray-700">Price</label>
-            <Input
-              onChange={(e) => setNewPrice(Number(e.target.value))}
-              name="price"
-              value={newPrice}
-              placeholder="Enter price"
-              className="w-[300px] px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+                  <div className="flex justify-between items-start">
+                    <label className="text-sm font-medium text-gray-700">
+                      Ingredients
+                    </label>
+                    <Input
+                      onChange={(e) => setNewIngredients(e.target.value)}
+                      value={newIngredients}
+                      name="ingredients"
+                      placeholder="List ingredients..."
+                      className="w-[300px] min-h-[90px] px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700">
+                      Price
+                    </label>
+                    <Input
+                      onChange={(e) => setNewPrice(Number(e.target.value))}
+                      name="price"
+                      value={formatWithApostrophe(newPrice)}
+                      placeholder="Enter price"
+                      className="w-[300px] px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
 
-          <FoodImage image={image} newImg={newImg} setNewImg={setNewImg} />
+                  <FoodImage
+                    image={image}
+                    newImg={newImg}
+                    setNewImg={setNewImg}
+                  />
 
-          <div className="flex justify-between items-center pt-4">
-            <TrashIcon
-              onClick={deleteFood}
-              className="text-red-500 cursor-pointer"
-            />
-            <button
-              disabled={loading}
-              onClick={async () => {
-                const url = await uploadImage(newImg);
-                if (url) {
-                  updateFood(url);
-                }
-              }}
-              className="w-[140px] h-10 flex justify-center items-center bg-black text-white rounded-md"
-            >
-              {loading ? (
-                <Loader size={18} className="animate-spin" />
-              ) : (
-                "Save Changes"
-              )}
-            </button>
-          </div>
-        </div>
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>
-
+                  <div className="flex justify-between items-center pt-4">
+                    <TrashIcon
+                      onClick={deleteFood}
+                      className="text-red-500 cursor-pointer"
+                    />
+                    <button
+                      disabled={loading}
+                      onClick={async () => {
+                        const url = await uploadImage(newImg);
+                        if (url) {
+                          updateFood(url);
+                        }
+                      }}
+                      className="w-[140px] h-10 flex justify-center items-center bg-black text-white rounded-md"
+                    >
+                      {loading ? (
+                        <Loader size={18} className="animate-spin" />
+                      ) : (
+                        "Save Changes"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
