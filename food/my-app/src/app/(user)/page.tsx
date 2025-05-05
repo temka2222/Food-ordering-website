@@ -33,9 +33,8 @@ export default function Home() {
         <img className="object-fit" src="/BG.png"></img>
       </div>
       <Categories categoryId={categoryId} setCategoryId={setCategoryId} />
-      <SelectedFoodProvider>
+
       <DishesList categoryId={categoryId} />
-       </SelectedFoodProvider>
     </div>
   );
 }

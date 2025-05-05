@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-fit`}
       >
         <UserProvider>
-          <div className="m-auto w-full max-w-[1440px]">{children}</div>
+          <div className=" w-full max-w-[1440px] m-auto">{children}</div>
         </UserProvider>
       </body>
     </html>

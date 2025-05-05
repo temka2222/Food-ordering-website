@@ -2,13 +2,14 @@
 
 import { PropsWithChildren, useContext, useState } from "react";
 import { createContext } from "react";
-export type SelectedFoodType={
-    foodId:string;
-    qty:number
-  }
+export type SelectedFoodType = {
+  foodId: string;
+  qty: number;
+  price: number;
+};
 type SelectedFoodContextType = {
- selectedFood:SelectedFoodType[],
- setSelectedFood:React.Dispatch<React.SetStateAction<SelectedFoodType[]>>
+  selectedFood: SelectedFoodType[];
+  setSelectedFood: React.Dispatch<React.SetStateAction<SelectedFoodType[]>>;
 } & PropsWithChildren;
 
 export const SelectedFoodContext = createContext<SelectedFoodContextType>(
