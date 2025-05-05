@@ -9,10 +9,12 @@ import { getFoodController } from "../controllers/foodController/get-food-by-id"
 const foodRouter = Router();
 
 foodRouter
+ .get("/count", getCountFoodsBycategory)
   .get("/", getFoodsBycategory)
+  .get("/:id",getFoodController)
   .post("/", createFoodController)
   .put("/:id", updateFoodController)
   .delete("/", deleteteFoodController)
-  .get("/count", getCountFoodsBycategory);
+ 
 
 export default foodRouter;

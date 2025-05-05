@@ -13,9 +13,13 @@ type Category = {
   categoryName: string;
   _id: string;
 };
-export const Categories = () => {
+type CategoriesPrposType={
+   categoryId:string
+   setCategoryId:(value:string)=>void
+}
+export const Categories = ({categoryId,setCategoryId}:CategoriesPrposType) => {
   const [category, setCategory] = useState<Category[]>([]);
-  const [categoryId, setCategoryId] = useState<string>("");
+  
   const getCategory = async () => {
     const response = await axios.get("http://localhost:3001/category");
     setCategory(response.data.categories);
@@ -32,8 +36,17 @@ export const Categories = () => {
       <div className="pl-11 pr-11 ">
         <Carousel>
           <CarouselContent className="flex flex-row gap-4 ">
+             <button onClick={()=>{ setCategoryId("");}} 
+                    className={`px-5 py-2 rounded-full text-black text-sm whitespace-nowrap  ${
+                      categoryId === ""
+                        ? "bg-red-400 text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    All dishes
+                  </button>
             {category?.map((item, indx) => (
-              <Link key={indx} href={`/categoryFoods?categoryId=${item._id}`}>
+             
                 <CarouselItem
                   onClick={() => {
                     setCategoryId(item._id);
@@ -41,7 +54,7 @@ export const Categories = () => {
                   key={indx}
                   className="basis-auto "
                 >
-                  <button
+                  <button 
                     className={`px-5 py-2 rounded-full text-black text-sm whitespace-nowrap  ${
                       categoryId === item._id
                         ? "bg-red-400 text-white"
@@ -51,7 +64,7 @@ export const Categories = () => {
                     {item.categoryName}
                   </button>
                 </CarouselItem>
-              </Link>
+         
             ))}
           </CarouselContent>
           <CarouselPrevious className="bg-transparent border-0 text-white" />

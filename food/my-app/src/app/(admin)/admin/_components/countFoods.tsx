@@ -14,7 +14,7 @@ export const Countfoods = ({ categoryId }: CountFoodsProps) => {
     // setTotalFoods(response.data[0].totalFood);
     setTotalFoods(response.data.totalFood);
   };
-
+ console.log(categoryId)
   useEffect(() => {
     getCountFoods();
   }, []);
