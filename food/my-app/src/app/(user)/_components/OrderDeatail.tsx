@@ -16,7 +16,7 @@ export const OrderDetail = () => {
     (total, item) => total + item.price * item.qty,
     0
   );
-
+  
   return (
     <SheetContent className=" w-[500px] flex flex-col gap-6 p-2  bg-[#404040]">
       <SheetHeader>
