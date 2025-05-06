@@ -229,7 +229,9 @@ export const AdminFoodCard = ({
                     <button
                       disabled={loading}
                       onClick={async () => {
-                        const url = await uploadImage(newImg);
+                        const url = newImg
+                          ? await uploadImage(newImg)
+                          : uploadedUrl;
                         if (url) {
                           updateFood(url);
                         }

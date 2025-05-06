@@ -12,6 +12,7 @@ import { formatWithApostrophe } from "./productCard";
 import { string } from "zod";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useSelecFood } from "./SelectedFoodProvider";
+import { UserDialog } from "./Dialog";
 
 type SelectFoodPropsType = {
   foodName: string;
@@ -30,28 +31,39 @@ export const SelectFood = ({
 }: SelectFoodPropsType) => {
   const [selectedQty, setSelectedQty] = useState(1);
   const { selectedFood, setSelectedFood } = useSelecFood();
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [MainDialog, setMainDialog] = useState(false);
   const AddToCart = (selectedFoodId: string, selectedQty: number) => {
-    const duplicateFood = selectedFood?.filter((item) => {
-      return item.foodId == selectedFoodId;
-    });
-    if (duplicateFood.length > 0) {
-      const newCardFood = selectedFood.map((food) => {
-        return food.foodId == selectedFoodId
-          ? { ...food, qty: food.qty + selectedQty }
-          : food;
+    try {
+      const duplicateFood = selectedFood?.filter((item) => {
+        return item.foodId == selectedFoodId;
       });
-      setSelectedFood(newCardFood);
-    } else {
-      setSelectedFood((prev) => [
-        ...prev,
-        { foodId: selectedFoodId, qty: selectedQty, price: price },
-      ]);
+      if (duplicateFood.length > 0) {
+        const newCardFood = selectedFood.map((food) => {
+          return food.foodId == selectedFoodId
+            ? { ...food, qty: food.qty + selectedQty }
+            : food;
+        });
+        setSelectedFood(newCardFood);
+      } else {
+        setSelectedFood((prev) => [
+          ...prev,
+          { foodId: selectedFoodId, qty: selectedQty, price: price },
+        ]);
+      }
+      setMainDialog(false);
+      setDescription("Сагсанд хоол амжилттай нэмэгдлээ");
+      setIsOpen(true);
+    } catch (error) {
+      console.error("AddToCart error:", error);
     }
   };
 
   return (
     <div className="absolute left-[75%] top-[45%]">
-      <Dialog>
+      <Dialog open={MainDialog} onOpenChange={setMainDialog}>
         <DialogTrigger className="text-red-500 w-9 h-9 flex justify-center items-center bg-white rounded-full ">
           <PlusIcon size={18} />
         </DialogTrigger>
@@ -115,6 +127,12 @@ export const SelectFood = ({
           </div>
         </DialogContent>
       </Dialog>
+      <UserDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={title}
+        description={description}
+      />
     </div>
   );
 };

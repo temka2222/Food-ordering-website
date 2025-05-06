@@ -2,12 +2,14 @@ import { orderModel } from "../../models/orders.model";
 
 export const createOrderController = async (req, res) => {
   try {
-    const { user, totalPrice, foodOrderItems, status } = req.body;
+    const { user, totalPrice, foodOrderItems } = req.body;
+
+    // const calculatedTotalprice=foodOrderItems.reduce(())
+
     await orderModel.create({
       user,
       totalPrice,
       foodOrderItems,
-      status,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
