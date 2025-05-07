@@ -10,16 +10,15 @@ import { formatWithApostrophe } from "./productCard";
 import { useAddOrder } from "./AddOrder";
 import axios from "axios";
 import { UserDialog } from "./Dialog";
+import { OrderCartMessage } from "./OrderCartMessage";
+import { OrderHistory } from "./OrderHistory";
 type OrderDetailType = {
   isOpensheet: boolean;
   setIsOpensheet: (value: boolean) => void;
 };
-export const OrderDetail = ({
-  isOpensheet,
-  setIsOpensheet,
-}: OrderDetailType) => {
+export const OrderDetail = () => {
   const { selectedFood, setSelectedFood } = useSelecFood();
-  const [selectedButton, setSelectedButton] = useState("");
+  const [selectedButton, setSelectedButton] = useState("cart");
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -28,7 +27,7 @@ export const OrderDetail = ({
     setIsLoading,
     setIsOpen,
     setDescription,
-    setIsOpensheet,
+    setSelectedButton,
   });
   const shipping = 5000;
   const totalPrice = selectedFood.reduce(
@@ -69,40 +68,53 @@ export const OrderDetail = ({
       </div>
       {selectedButton == "cart" && (
         <>
-          <div className="w-full flex flex-col justify-center items-center gap-6 bg-white rounded-2xl">
-            <div className="flx-2 flex flex-col ">
-              <p className="font-medium p-4">My cart </p>
-              {selectedFood?.map((food, index) => {
-                return (
+          <div className="w-full flex flex-col justify-center items-center gap-6 bg-white rounded-2xl pb-4 ">
+            <div className="flex flex-col">
+              <p className="font-medium p-4">My cart</p>
+              {selectedFood && selectedFood.length > 0 ? (
+                selectedFood.map((food, index) => (
                   <CardFoodProduct
                     key={food.foodId}
                     foodId={food.foodId}
                     index={index}
                   />
-                );
-              })}
+                ))
+              ) : (
+                <OrderCartMessage
+                  title="Your cart is empty"
+                  description="Hungry? 🍔 Add some delicious dishes to your cart and satisfy your cravings!"
+                />
+              )}
             </div>
-            <div className="w-full p-4"></div>
           </div>
           <div className="flex flex-col w-full gap-5  bg-white p-4 rounded-xl">
             <p className="font-medium text-xl">Payment info</p>
             <div className="w-full flex justify-between">
               <p className="text-[#71717A]">Items</p>
-              <p className="font-medium">₮{formatWithApostrophe(totalPrice)}</p>
+              <p className="font-medium">
+                {totalPrice !== 0
+                  ? "₮" + formatWithApostrophe(totalPrice)
+                  : "-"}
+              </p>
             </div>
             <div className="w-full flex justify-between">
               <p className="text-[#71717A]">shipping</p>
-              <p className="font-medium">₮{formatWithApostrophe(shipping)}</p>
+              <p className="font-medium">
+                {totalPrice !== 0 ? "₮" + formatWithApostrophe(shipping) : "-"}
+              </p>
             </div>
             <div className="border border-dashed"></div>
             <div className="w-full flex justify-between">
               <p className="text-[#71717A]">Total</p>
               <p className="font-medium">
-                ₮{formatWithApostrophe(shipping + totalPrice)}
+                {totalPrice !== 0
+                  ? "₮" + formatWithApostrophe(shipping + totalPrice)
+                  : "-"}
               </p>
             </div>
 
             <Button
+              disabled={totalPrice !== 0 ? false : true}
               onClick={() => {
                 AddNewOrder();
               }}
@@ -113,6 +125,7 @@ export const OrderDetail = ({
           </div>
         </>
       )}
+      {selectedButton == "order" && <OrderHistory />}
       <UserDialog
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

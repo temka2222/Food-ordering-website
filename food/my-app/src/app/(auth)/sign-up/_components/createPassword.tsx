@@ -74,9 +74,6 @@ export const CreatePassword = ({ step, setStep }: StepPropsType) => {
       confirmPass: "",
     },
   });
-  //   const { password, confirmPass } = watch();
-
-  //   console.log(password, confirmPass);
 
   return (
     <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-[16px]">
@@ -102,6 +99,7 @@ export const CreatePassword = ({ step, setStep }: StepPropsType) => {
 
               setUserValues(newvalue);
               setStep(step + 1);
+              router.push("./");
             })}
             className="  flex  flex-col gap-8  "
           >

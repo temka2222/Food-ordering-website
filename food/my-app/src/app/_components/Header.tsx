@@ -12,7 +12,6 @@ import { useState } from "react";
 export const Header = () => {
   const { userValues, setUserValues } = useUser();
   const router = useRouter();
-  const [isOpensheet, setIsOpensheet] = useState(false);
   return (
     <div className="relative   flex flex-row justify-between items-center pr-22 pl-22 pt-3 pb-3 bg-black border-solid border-white border-1">
       <div className=" flex flex-row gap-3">
@@ -57,7 +56,7 @@ export const Header = () => {
             <ChevronRight />
           </div>
           <div>
-            <Sheet open={isOpensheet} onOpenChange={setIsOpensheet}>
+            <Sheet>
               <SheetTrigger asChild>
                 <Button
                   variant="link"
@@ -66,10 +65,7 @@ export const Header = () => {
                   <ShopCard />
                 </Button>
               </SheetTrigger>
-              <OrderDetail
-                isOpensheet={isOpensheet}
-                setIsOpensheet={setIsOpensheet}
-              />
+              <OrderDetail />
             </Sheet>
           </div>
           <div className="group">

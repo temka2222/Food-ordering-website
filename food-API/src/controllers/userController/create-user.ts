@@ -2,23 +2,12 @@ import { userModel } from "../../models/user.model";
 
 export const createUserController = async (req, res) => {
   try {
-    const {
-      email,
-      password,
-      phoneNumber,
-      address,
-      role,
-      orderedFoods,
-      isVerified,
-    } = req.body;
+    const { email, password, phoneNumber, address } = req.body;
     await userModel.create({
       email,
       password,
       phoneNumber,
       address,
-      role,
-      orderedFoods,
-      isVerified,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

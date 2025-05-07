@@ -31,7 +31,6 @@ export default function Home() {
       email: "",
     },
   });
-  console.log(userValues);
   return (
     <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-[16px]">
       <div className="flex-1 ">

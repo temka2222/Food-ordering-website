@@ -29,11 +29,8 @@ export const CardFoodProduct = ({ foodId, index }: CardFoodProductType) => {
     });
     setSelectedFood(newFoodCart);
   };
-  // useEffect(() => {
-  //   if (food?.price) setPaymentValue(food.price * selectedFood[index].qty);
-  // }, [selectedFood[index].qty]);
   return food ? (
-    <div className=" relative flex-1 flex max-h-screen flex-row h-[412px] bg-white p-6  gap-4 overflow-y-scroll">
+    <div className=" relative flex-1 flex max-h-screen flex-row h-[412px] bg-white p-6  gap-4 overflow-y-scroll rounded-2xl">
       <div className="flex-1">
         <img
           className="w-full h-full rounded-xl object-cover"
