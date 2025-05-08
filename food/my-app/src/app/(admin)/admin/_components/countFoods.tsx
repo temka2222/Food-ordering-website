@@ -6,15 +6,13 @@ type CountFoodsProps = {
 };
 export const Countfoods = ({ categoryId }: CountFoodsProps) => {
   const [totalFoods, setTotalFoods] = useState<number>(0);
-  // const [categoryId, setCategoryId] = useState<string>("");
   const getCountFoods = async () => {
     const response = await axios.get(
       `http://localhost:3001/food/count?categoryId=${categoryId}`
     );
-    // setTotalFoods(response.data[0].totalFood);
     setTotalFoods(response.data.totalFood);
   };
- console.log(categoryId)
+
   useEffect(() => {
     getCountFoods();
   }, []);

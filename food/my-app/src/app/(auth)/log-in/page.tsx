@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useUser } from "../sign-up/_components/userValueProvider";
+import { useState } from "react";
 type StepPropsType = {
   step: number;
   setStep: (value: number) => void;
@@ -23,8 +24,9 @@ export const schema = z.object({
 });
 export default function Home() {
   const router = useRouter();
-  const { userValues, setUserValues } = useUser();
-
+  const [email, setEmail] = useState("");
+  const [password, SetPassword] = useState("");
+  const { signIn } = useUser();
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -51,12 +53,9 @@ export default function Home() {
           </div>
           <form
             onSubmit={handleSubmit((data) => {
-              const newvalue = { ...userValues };
-              newvalue.email = data.email;
-              newvalue.password = data.password;
-              newvalue.isLoggedIn = true;
-              setUserValues(newvalue);
-              router.push("./");
+              setEmail(data.email);
+              SetPassword(data.password);
+              signIn(email, password);
             })}
             className="  flex flex-col gap-8 items-start  "
           >
@@ -91,12 +90,6 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => {
-                const newValues = { ...userValues };
-                newValues.isLoggedIn = true;
-                setUserValues(newValues);
-                router.push("./");
-              }}
               type="submit"
               className="w-[70%] flex justify-center items-center bg-black text-white border-solid border pr-8 pl-8 rounded-sm p-2 "
             >

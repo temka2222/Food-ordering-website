@@ -3,14 +3,21 @@ import { Logo } from "./assets/Logo";
 import { useRouter } from "next/navigation";
 import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
 import { ShopCard } from "./assets/Shoppingcard";
-import { ChevronRight, MapIcon, MapPin, User2Icon } from "lucide-react";
+import { ChevronRight, MapIcon, MapPin, User2Icon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OrderDetail } from "../(user)/_components/OrderDeatail";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AddAddress } from "./assets/AddAddress";
 export const Header = () => {
-  const { userValues, setUserValues } = useUser();
+  const { user, signOut } = useUser();
+
   const router = useRouter();
   return (
     <div className="relative   flex flex-row justify-between items-center pr-22 pl-22 pt-3 pb-3 bg-black border-solid border-white border-1">
@@ -23,7 +30,7 @@ export const Header = () => {
           <p className="text-xs text-white">Swift delivery</p>
         </div>
       </div>
-      {userValues.isLoggedIn === false && (
+      {!user && (
         <div className="flex flex-row gap-3 text-[14px]">
           <div>
             <button
@@ -47,14 +54,26 @@ export const Header = () => {
           </div>
         </div>
       )}
-      {userValues.isLoggedIn === true && (
+      {user && (
         <div className="flex flex-row gap-3 text-[14px] items-center">
           <div className="flex flex-row gap-1 bg-white pl-3 pr-3 pt-2 pb-2 rounded-full">
             <MapPin className="text-red-300" />
-            <p className="text-red-300">Delivery address:</p>
-            <p className="text-[#71717A]">Add Location</p>
-            <ChevronRight />
+            {user.address !== "" ? (
+              <div className="flex flex-row gap-1">
+                <p className="text-red-300">Delivery address:</p>
+                <p className="text-[#71717A]">Add Location</p>
+              </div>
+            ) : (
+              <p>{user.address}</p>
+            )}
+            <Dialog>
+              <DialogTrigger>
+                {user.address !== "" ? <ChevronRight /> : <X />}
+              </DialogTrigger>
+              <AddAddress />
+            </Dialog>
           </div>
+
           <div>
             <Sheet>
               <SheetTrigger asChild>
@@ -72,14 +91,9 @@ export const Header = () => {
             <button className="bg-red-500 pl-2 pr-2 pt-2 pb-2 rounded-full">
               <User2Icon />
               <div className="absolute flex flex-col right-5 top-[80%] mt-2 p-4 gap-8 bg-white border border-gray-200 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
-                <p>{userValues.email}</p>
+                <p>{user.email}</p>
                 <button
-                  onClick={() => {
-                    const newValues = { ...userValues };
-                    newValues.isLoggedIn = false;
-                    setUserValues(newValues);
-                    router.push("/");
-                  }}
+                  onClick={() => signOut()}
                   className="p-1 bg-gray-100 rounded-full  "
                 >
                   sign out

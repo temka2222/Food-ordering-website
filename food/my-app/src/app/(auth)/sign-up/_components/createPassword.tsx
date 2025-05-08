@@ -6,6 +6,7 @@ import { useUser } from "./userValueProvider";
 import { useState } from "react";
 import { text } from "stream/consumers";
 import { useRouter } from "next/navigation";
+import { NewUserType } from "../page";
 const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const letters = [
   "a",
@@ -38,12 +39,14 @@ const letters = [
 type StepPropsType = {
   step: number;
   setStep: (value: number) => void;
+  newUser: NewUserType;
+  setNewUser: (value: NewUserType) => void;
 };
 export const schema = z
   .object({
     password: z
       .string()
-      .min(1, { message: "Insert Password" })
+      .min(3, { message: "Insert Password" })
       .refine(
         (value) => {
           const chars = value.split("");
@@ -63,10 +66,15 @@ export const schema = z
     path: ["confirmPass"],
   });
 
-export const CreatePassword = ({ step, setStep }: StepPropsType) => {
+export const CreatePassword = ({
+  step,
+  setStep,
+  newUser,
+  setNewUser,
+}: StepPropsType) => {
   const router = useRouter();
-  const { userValues, setUserValues } = useUser();
   const [checkValue, setCheckValue] = useState(false);
+  const { signUp, user } = useUser();
   const { register, handleSubmit, formState, watch } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -93,13 +101,17 @@ export const CreatePassword = ({ step, setStep }: StepPropsType) => {
           </div>
           <form
             onSubmit={handleSubmit((data) => {
-              const newvalue = { ...userValues };
+              const newvalue = { ...newUser };
               newvalue.password = data.password;
               newvalue.confirmPass = data.confirmPass;
 
-              setUserValues(newvalue);
               setStep(step + 1);
-              router.push("./");
+              signUp(
+                newUser.email,
+                newvalue.password,
+                newUser.phoneNumber,
+                newUser.address
+              );
             })}
             className="  flex  flex-col gap-8  "
           >

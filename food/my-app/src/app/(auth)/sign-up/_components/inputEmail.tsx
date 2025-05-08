@@ -2,11 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUser } from "./userValueProvider";
+import { UserType, useUser } from "./userValueProvider";
 import { useRouter } from "next/navigation";
+import { NewUserType } from "../page";
 type StepPropsType = {
   step: number;
   setStep: (value: number) => void;
+  newUser: NewUserType;
+  setNewUser: (value: NewUserType) => void;
 };
 export const schema = z.object({
   email: z
@@ -14,9 +17,13 @@ export const schema = z.object({
     .min(1, { message: "Insert email" })
     .email({ message: "Please provide a valid email address." }),
 });
-export const InputEmail = ({ step, setStep }: StepPropsType) => {
+export const InputEmail = ({
+  step,
+  setStep,
+  newUser,
+  setNewUser,
+}: StepPropsType) => {
   const router = useRouter();
-  const { userValues, setUserValues } = useUser();
 
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
@@ -24,7 +31,6 @@ export const InputEmail = ({ step, setStep }: StepPropsType) => {
       email: "",
     },
   });
-  console.log(userValues);
   return (
     <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-[16px]">
       <div className="flex-1 ">
@@ -46,10 +52,10 @@ export const InputEmail = ({ step, setStep }: StepPropsType) => {
           <form
             onSubmit={handleSubmit((data) => {
               setStep(step + 1);
-              const newvalue = { ...userValues };
+              const newvalue = { ...newUser };
               newvalue.email = data.email;
 
-              setUserValues(newvalue);
+              setNewUser(newvalue);
             })}
             className="  flex flex-col gap-8  "
           >

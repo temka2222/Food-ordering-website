@@ -17,6 +17,7 @@ export const signUp: RequestHandler = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
     const { password: userPassword, ...userWithoutPassword } =
       newUser.toObject();
     const token = jwt.sign(

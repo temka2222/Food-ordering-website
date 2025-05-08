@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import {
   Children,
   createContext,
@@ -20,7 +20,6 @@ export type UserType = {
   isLoggedIn: boolean;
 };
 export type UserContextType = {
-  userValues: UserType;
   user?: UserType;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
@@ -29,8 +28,8 @@ export type UserContextType = {
     phoneNumber: string,
     address: string
   ) => Promise<void>;
-  setUserValues: (value: UserType) => void;
   signOut: () => Promise<void>;
+  UpdateUserAddress: (address: string) => Promise<void>;
 } & PropsWithChildren;
 
 export const UserContext = createContext<UserContextType>(
@@ -38,14 +37,6 @@ export const UserContext = createContext<UserContextType>(
 );
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
-  const [userValues, setUserValues] = useState<UserType>({
-    email: "",
-    password: "",
-    confirmPass: "",
-    phoneNumber: "",
-    address: "",
-    isLoggedIn: false,
-  });
   const [user, setUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -55,6 +46,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         email,
         password,
       });
+
       localStorage.setItem("token", data.token);
       setUser(data.user);
       router.push("/");
@@ -63,9 +55,21 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
       } else {
         router.push("/");
       }
-      // admin bol admin huudasruu
     } catch {
       toast.error("Нэвтрэх үйлдэл амжилтгүй");
+    }
+  };
+  const UpdateUserAddress = async (address: string) => {
+    try {
+      const { data } = await axios.put("http://localhost:3001/auth/update", {
+        userAddress: address,
+      });
+
+      localStorage.setItem("token", data.token);
+
+      toast.success("Хаяг амжилттай шинэчлэгдлээ");
+    } catch {
+      toast.error("Амжилтгүй");
     }
   };
   const signUp = async (
@@ -74,6 +78,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     phoneNumber: string,
     address: string
   ) => {
+    console.log("pass", password);
     try {
       const { data } = await axios.post("http://localhost:3001/auth/signup", {
         email,
@@ -81,9 +86,10 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         phoneNumber,
         address,
       });
+      console.log("pass", password);
       localStorage.setItem("token", data.token);
       setUser(data.user);
-      router.push("/");
+      router.push("./");
     } catch (error) {
       console.error(error);
       toast.error("Амжилтгүй");
@@ -116,7 +122,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   }, []);
   return (
     <UserContext.Provider
-      value={{ userValues, user, signIn, signOut, signUp, setUserValues }}
+      value={{ user, signIn, signOut, signUp, UpdateUserAddress }}
     >
       {!loading && children}
     </UserContext.Provider>

@@ -5,8 +5,6 @@ import { relative } from "path";
 import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
 import { Categories } from "../_components/Categories";
 import { DishesList } from "./_components/DishesList";
-import { SelectedFoodProvider } from "./_components/SelectedFoodProvider";
-
 export type CategoryType = {
   categoryName: string;
   _id: string;
@@ -24,7 +22,6 @@ export type FoodsType = {
   updatedAt: string;
 };
 export default function Home() {
-  const { userValues, setUserValues } = useUser();
   const [categoryId, setCategoryId] = useState<string>("");
 
   return (
