@@ -7,35 +7,6 @@ import { useState } from "react";
 import { text } from "stream/consumers";
 import { useRouter } from "next/navigation";
 import { NewUserType } from "../page";
-const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-const letters = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
 type StepPropsType = {
   step: number;
   setStep: (value: number) => void;
@@ -46,19 +17,10 @@ export const schema = z
   .object({
     password: z
       .string()
-      .min(3, { message: "Insert Password" })
-      .refine(
-        (value) => {
-          const chars = value.split("");
-
-          return chars.every(
-            (char) => letters.includes(char) || num.includes(char)
-          );
-        },
-        {
-          message: "Password must include letters and numbers.",
-        }
-      ),
+      .min(1, { message: "Insert Password" })
+      .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, {
+        message: "Password must include at least one letter and one number.",
+      }),
     confirmPass: z.string(),
   })
   .refine((data) => data.password === data.confirmPass, {
