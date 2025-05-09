@@ -7,7 +7,7 @@ import { useState } from "react";
 export const AddAddress = () => {
   const [selectButton, setSelectButton] = useState("Deliver Here");
   const [address, setAddress] = useState("");
-  const { UpdateUserAddress } = useUser();
+  const { UpdateUserAddress, user } = useUser();
 
   return (
     <DialogContent className=" gap-6 rounded-xl">

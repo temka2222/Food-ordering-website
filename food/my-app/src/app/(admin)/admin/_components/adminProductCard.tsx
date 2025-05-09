@@ -13,7 +13,6 @@ import { Close, DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
 import { Edit2Icon, ImageIcon, Loader, TrashIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { DeleteFood } from "./deleteFood";
 import { Input } from "@/components/ui/input";
 import { CategorySelect } from "./CategorySelect";
 import { toast } from "sonner";

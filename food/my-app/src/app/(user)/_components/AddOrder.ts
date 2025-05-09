@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useSelecFood } from "./SelectedFoodProvider";
+import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 type UseAddOrderType = {
   setIsLoading: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
@@ -13,7 +14,7 @@ export const useAddOrder = ({
   setSelectedButton,
 }: UseAddOrderType) => {
   const { selectedFood, setSelectedFood } = useSelecFood();
-
+  const { user } = useUser();
   const AddNewOrder = async () => {
     setIsLoading(true);
     const foodOrderItems = selectedFood.map((item) => ({
@@ -23,7 +24,7 @@ export const useAddOrder = ({
 
     try {
       const response = await axios.post("http://localhost:3001/order", {
-        user: "6808c58c4d870d2ccc3fb2ae",
+        user: user?._id,
         foodOrderItems: foodOrderItems,
       });
 

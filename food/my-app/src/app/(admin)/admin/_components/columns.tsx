@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { FoodsType } from "@/app/(user)/page";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,13 +8,12 @@ import { ArrowUpDown } from "lucide-react";
 
 export type OrdersTableType = {
   user: string;
-  foodOrderItems: foodOrderItems[];
+  foodOrderItems: FoodsType[];
   createdAt: string;
   totalPrice: number;
   address: string;
   status: "pending" | "delivered" | "canceled";
 };
-
 export const columns: ColumnDef<OrdersTableType>[] = [
   {
     id: "select",
@@ -34,8 +34,8 @@ export const columns: ColumnDef<OrdersTableType>[] = [
         aria-label="Select row"
       />
     ),
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     header: "Customer",

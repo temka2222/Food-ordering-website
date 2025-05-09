@@ -16,8 +16,8 @@ export default function Home() {
     email: "",
     password: "",
     confirmPass: "",
-    phoneNumber: "99999999",
-    address: "ub ub ub",
+    phoneNumber: "",
+    address: "",
   });
   return (
     <div>

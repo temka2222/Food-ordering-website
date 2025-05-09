@@ -4,6 +4,7 @@ import { authenticationMiddleware } from "../middlewares/authentication-middlewa
 import { signIn } from "../controllers/auth/sign-in";
 import { signUp } from "../controllers/auth/sign-up";
 import { updateUser } from "../controllers/auth/update-user";
+import { authorizationMiddleware } from "../middlewares/authorization-middleware";
 
 export const authRouter = Router()
   .get("/me", authenticationMiddleware, getMe)

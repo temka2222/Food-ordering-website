@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { UserProvider } from "./(auth)/sign-up/_components/userValueProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-fit`}
       >
+        <Toaster position="top-center" />
         <UserProvider>
           <div className=" w-full max-w-[1440px] m-auto">{children}</div>
         </UserProvider>

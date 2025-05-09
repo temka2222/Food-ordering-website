@@ -146,7 +146,13 @@ export const CreatePassword = ({
             </label>
             <button
               type="submit"
-              className="w-[70%] flex justify-center items-center bg-[#cccbcc] text-white border-solid border pr-8 pl-8 rounded-sm p-2 "
+              disabled={formState.isSubmitting || !formState.isValid}
+              className={`w-[70%] flex justify-center items-center text-white border-solid border pr-8 pl-8 rounded-sm p-2 
+                          ${
+                            formState.isSubmitting || !formState.isValid
+                              ? "bg-[#cccbcc]"
+                              : "bg-black"
+                          } `}
             >
               Let's Go
             </button>

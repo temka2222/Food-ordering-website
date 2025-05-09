@@ -58,7 +58,7 @@ export const Header = () => {
         <div className="flex flex-row gap-3 text-[14px] items-center">
           <div className="flex flex-row gap-1 bg-white pl-3 pr-3 pt-2 pb-2 rounded-full">
             <MapPin className="text-red-300" />
-            {user.address !== "" ? (
+            {!user.address ? (
               <div className="flex flex-row gap-1">
                 <p className="text-red-300">Delivery address:</p>
                 <p className="text-[#71717A]">Add Location</p>
@@ -68,7 +68,7 @@ export const Header = () => {
             )}
             <Dialog>
               <DialogTrigger>
-                {user.address !== "" ? <ChevronRight /> : <X />}
+                {!user.address ? <ChevronRight /> : <X size={18} />}
               </DialogTrigger>
               <AddAddress />
             </Dialog>
@@ -87,19 +87,18 @@ export const Header = () => {
               <OrderDetail />
             </Sheet>
           </div>
-          <div className="group">
+          <div className="group relative">
             <button className="bg-red-500 pl-2 pr-2 pt-2 pb-2 rounded-full">
               <User2Icon />
-              <div className="absolute flex flex-col right-5 top-[80%] mt-2 p-4 gap-8 bg-white border border-gray-200 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
-                <p>{user.email}</p>
-                <button
-                  onClick={() => signOut()}
-                  className="p-1 bg-gray-100 rounded-full  "
-                >
+            </button>
+            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 flex flex-col p-4 gap-2 bg-white border border-gray-200 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+              <p>{user.email}</p>
+              <div className="p-1 bg-gray-100 rounded-full">
+                <button onClick={() => signOut()} className="w-full">
                   sign out
                 </button>
               </div>
-            </button>
+            </div>
           </div>
         </div>
       )}

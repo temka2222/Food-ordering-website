@@ -3,37 +3,38 @@ import { useEffect, useState } from "react";
 import { FoodsType } from "../page";
 import {
   UserType,
-  UserValueType,
+  useUser,
 } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { MapIcon, SoupIcon, TimerIcon } from "lucide-react";
 import { OrderCartMessage } from "./OrderCartMessage";
 import { Skeleton } from "@/components/ui/skeleton";
-type FoodType = {
+export type FoodType = {
   food: FoodsType;
   quantity: number;
   _id: string;
 };
 type OrderType = {
   _id: string;
-  user: UserValueType;
+  user: UserType;
   totalPrice: number;
   foodOrderItems: FoodType[];
   status: string;
   createdAt: string;
 };
-const user = "6808c58c4d870d2ccc3fb2ae";
 export const OrderHistory = () => {
   const [order, setOrder] = useState<OrderType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUser();
   const getOrders = async () => {
     const response = await axios.get(
-      `http://localhost:3001/order?user=${user}`
+      `http://localhost:3001/order?user=${user?._id}`
     );
     setOrder(response.data.orders);
   };
   useEffect(() => {
     getOrders();
   }, []);
+  console.log(user);
   return (
     <div className="w-full flex flex-col gap-6 bg-white rounded-2xl pb-32">
       <p className="font-medium p-4">Order history</p>
@@ -71,7 +72,7 @@ export const OrderHistory = () => {
 
             <div className="flex flex-row items-center gap-2">
               <MapIcon size={18} />
-              <p>{food.user.address}</p>
+              <p>{user?.address}</p>
             </div>
           </div>
         ))

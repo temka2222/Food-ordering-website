@@ -10,11 +10,11 @@ const userSchema = new Schema({
   },
   phoneNumber: {
     type: Number,
-    required: true,
+    default: "",
   },
   address: {
     type: String,
-    required: true,
+    default: "",
   },
   role: {
     type: String,

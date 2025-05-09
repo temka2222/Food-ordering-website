@@ -12,12 +12,13 @@ import {
 import { toast } from "sonner";
 
 export type UserType = {
+  _id: string;
   email: string;
   password: string;
   confirmPass: string;
   phoneNumber: string;
   address: string;
-  isLoggedIn: boolean;
+  role: "admin" | "user";
 };
 export type UserContextType = {
   user?: UserType;
@@ -60,13 +61,19 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     }
   };
   const UpdateUserAddress = async (address: string) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     try {
-      const { data } = await axios.put("http://localhost:3001/auth/update", {
-        userAddress: address,
-      });
-
-      localStorage.setItem("token", data.token);
-
+      const { data } = await axios.put(
+        "http://localhost:3001/auth/update",
+        { userAddress: address },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      getUser();
       toast.success("Хаяг амжилттай шинэчлэгдлээ");
     } catch {
       toast.error("Амжилтгүй");
@@ -78,7 +85,6 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     phoneNumber: string,
     address: string
   ) => {
-    console.log("pass", password);
     try {
       const { data } = await axios.post("http://localhost:3001/auth/signup", {
         email,
@@ -86,7 +92,6 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         phoneNumber,
         address,
       });
-      console.log("pass", password);
       localStorage.setItem("token", data.token);
       setUser(data.user);
       router.push("./");
@@ -99,27 +104,34 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem("token");
     setUser(undefined);
   };
+
+  const getUser = async () => {
+    const token = localStorage.getItem("token");
+    setLoading(true);
+    try {
+      const { data } = await axios.get("http://localhost:3001/auth/me", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      console.log("asdasdas", data);
+
+      setUser(data);
+    } catch {
+      localStorage.removeItem("token");
+      setUser(undefined);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    const getUser = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get("http://localhost:3001/auth/me", {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-        setUser(data);
-      } catch {
-        localStorage.removeItem("token");
-        setUser(undefined);
-      } finally {
-        setLoading(false);
-      }
-    };
+
     getUser();
   }, []);
+
   return (
     <UserContext.Provider
       value={{ user, signIn, signOut, signUp, UpdateUserAddress }}

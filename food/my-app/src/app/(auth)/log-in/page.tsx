@@ -24,8 +24,6 @@ export const schema = z.object({
 });
 export default function Home() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, SetPassword] = useState("");
   const { signIn } = useUser();
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
@@ -53,9 +51,7 @@ export default function Home() {
           </div>
           <form
             onSubmit={handleSubmit((data) => {
-              setEmail(data.email);
-              SetPassword(data.password);
-              signIn(email, password);
+              signIn(data.email, data.password);
             })}
             className="  flex flex-col gap-8 items-start  "
           >
@@ -91,7 +87,12 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-[70%] flex justify-center items-center bg-black text-white border-solid border pr-8 pl-8 rounded-sm p-2 "
+              disabled={formState.isSubmitting || !formState.isValid}
+              className={`w-[70%] flex justify-center items-center text-white border-solid border pr-8 pl-8 rounded-sm p-2 
+    ${
+      formState.isSubmitting || !formState.isValid ? "bg-[#cccbcc]" : "bg-black"
+    } 
+  `}
             >
               Let's Go
             </button>

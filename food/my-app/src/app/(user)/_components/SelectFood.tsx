@@ -13,6 +13,8 @@ import { string } from "zod";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useSelecFood } from "./SelectedFoodProvider";
 import { UserDialog } from "./Dialog";
+import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
+import { useRouter } from "next/navigation";
 
 type SelectFoodPropsType = {
   foodName: string;
@@ -35,6 +37,8 @@ export const SelectFood = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [MainDialog, setMainDialog] = useState(false);
+  const { user } = useUser();
+  const router = useRouter();
   const AddToCart = (selectedFoodId: string, selectedQty: number) => {
     try {
       const duplicateFood = selectedFood?.filter((item) => {
@@ -116,6 +120,18 @@ export const SelectFood = ({
                 </div>
                 <button
                   onClick={() => {
+                    if (!user) {
+                      router.push("./log-in");
+                      return;
+                    }
+                    if (!user.address) {
+                      setIsOpen(true);
+                      setTitle("Та хүргэлт хүлээн авах хаягаа оруулна уу");
+                      setDescription("");
+                      setMainDialog(false);
+                      return;
+                    }
+
                     AddToCart(foodId, selectedQty);
                   }}
                   className="bg-black text-white pr-8 pl-8 pt-2 pb-2 rounded-2xl"
@@ -129,7 +145,11 @@ export const SelectFood = ({
       </Dialog>
       <UserDialog
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setIsOpen(false);
+          setTitle("");
+          setDescription("");
+        }}
         title={title}
         description={description}
       />

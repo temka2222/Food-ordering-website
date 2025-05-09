@@ -1,6 +1,4 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { HoverCardContent } from "@/components/ui/hover-card";
 import { useEffect, useState } from "react";
 import { CardFoodProduct } from "./CardFoodProduct";
 import { SelectedFoodType, useSelecFood } from "./SelectedFoodProvider";
