@@ -65,6 +65,7 @@ export const AdminFoodCard = ({
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
     try {
+      setLoading(true);
       const responseImg = await axios.post(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         formData,
@@ -77,6 +78,8 @@ export const AdminFoodCard = ({
       return responseImg.data.url;
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const updateFood = async (uploadedUrl: string) => {

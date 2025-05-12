@@ -21,9 +21,13 @@ export default function RootLayout({ children }: PropsWithChildren) {
               </button>
               <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 flex flex-col p-4 gap-2 bg-white border border-gray-200 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
                 <p>{user?.email}</p>
-                <div className="p-1 bg-gray-100 rounded-full">
-                  <button onClick={() => signOut()}>sign out</button>
-                </div>
+
+                <button
+                  className="flex flex-col justify-center items-center rounded-xl bg-gray-100"
+                  onClick={() => signOut()}
+                >
+                  sign out
+                </button>
               </div>
             </div>
           </div>

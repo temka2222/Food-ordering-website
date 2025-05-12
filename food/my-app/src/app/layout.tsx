@@ -30,7 +30,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-fit`}
       >
-        <Toaster position="top-center" />
         <UserProvider>
           <div className=" w-full max-w-[1440px] m-auto">{children}</div>
         </UserProvider>

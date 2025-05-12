@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   Children,
@@ -31,6 +32,7 @@ export type UserContextType = {
   ) => Promise<void>;
   signOut: () => Promise<void>;
   UpdateUserAddress: (address: string) => Promise<void>;
+  loading: boolean;
 } & PropsWithChildren;
 
 export const UserContext = createContext<UserContextType>(
@@ -43,6 +45,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const signIn = async (email: string, password: string) => {
     try {
+      setLoading(true);
       const { data } = await axios.post("http://localhost:3001/auth/signin", {
         email,
         password,
@@ -50,6 +53,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
 
       localStorage.setItem("token", data.token);
       setUser(data.user);
+
       router.push("/");
       if (data.user.role === "admin") {
         router.push("/admin");
@@ -58,6 +62,8 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
       }
     } catch {
       toast.error("Нэвтрэх үйлдэл амжилтгүй");
+    } finally {
+      setLoading(false);
     }
   };
   const UpdateUserAddress = async (address: string) => {
@@ -97,12 +103,14 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
       router.push("./");
     } catch (error) {
       console.error(error);
-      toast.error("Амжилтгүй");
+      toast.error("Амжилтгүй! хэрэглэгч бүртгэлтэй байна");
+      router.push("sign-up");
     }
   };
   const signOut = async () => {
     localStorage.removeItem("token");
     setUser(undefined);
+    router.push("./");
   };
 
   const getUser = async () => {
@@ -134,9 +142,9 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <UserContext.Provider
-      value={{ user, signIn, signOut, signUp, UpdateUserAddress }}
+      value={{ user, signIn, signOut, signUp, UpdateUserAddress, loading }}
     >
-      {!loading && children}
+      {loading ? <Loader className="animate-spin" /> : children}
     </UserContext.Provider>
   );
 };

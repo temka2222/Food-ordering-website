@@ -7,7 +7,6 @@ import {
 } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { MapIcon, SoupIcon, TimerIcon } from "lucide-react";
 import { OrderCartMessage } from "./OrderCartMessage";
-import { Skeleton } from "@/components/ui/skeleton";
 export type FoodType = {
   food: FoodsType;
   quantity: number;
@@ -77,7 +76,6 @@ export const OrderHistory = () => {
           </div>
         ))
       ) : (
-        // <Skeleton className="flex-1 h-10 w-10" />
         <OrderCartMessage
           title="No Orders Yet?"
           description="🍕 You haven't placed any orders yet. Start exploring our menu and satisfy your cravings!"
