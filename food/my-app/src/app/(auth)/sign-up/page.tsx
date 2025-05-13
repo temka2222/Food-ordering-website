@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowLeftIcon } from "lucide-react";
 import { PropsWithChildren, use, useState } from "react";
 import { InputEmail } from "./_components/inputEmail";
 import { CreatePassword } from "./_components/createPassword";
+import { useUser } from "./_components/userValueProvider";
 export type NewUserType = {
   email: string;
   password: string;
@@ -11,7 +12,7 @@ export type NewUserType = {
   address: string;
 };
 export default function Home() {
-  const [step, setStep] = useState<number>(1);
+  const { step, setStep } = useUser();
   const [newUser, setNewUser] = useState({
     email: "",
     password: "",

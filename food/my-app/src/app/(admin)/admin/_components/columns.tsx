@@ -123,10 +123,10 @@ export const columns: ColumnDef<OrdersTableType>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="flex items-center gap-1"
+          className="flex items-center"
         >
           Date
-          <div className="flex flex-col items-center ">
+          <div className="flex flex-col ">
             <ChevronUp
               size={8}
               className={` ${
@@ -162,7 +162,31 @@ export const columns: ColumnDef<OrdersTableType>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center"
+        >
+          Status
+          <div className="flex flex-col ">
+            <ChevronUp
+              size={8}
+              className={` ${
+                column.getIsSorted() === "asc" ? "text-black" : "text-gray-400"
+              }`}
+            />
+            <ChevronDown
+              size={8}
+              className={` ${
+                column.getIsSorted() === "desc" ? "text-black" : "text-gray-400"
+              }`}
+            />
+          </div>
+        </Button>
+      );
+    },
     cell: ({ row }) => <StatusColumn row={row} />,
   },
 ];

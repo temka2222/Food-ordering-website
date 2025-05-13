@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
+import { boolean } from "zod";
 
 export type UserType = {
   _id: string;
@@ -33,6 +34,8 @@ export type UserContextType = {
   signOut: () => Promise<void>;
   UpdateUserAddress: (address: string) => Promise<void>;
   loading: boolean;
+  step: number;
+  setStep: (value: number) => void;
 } & PropsWithChildren;
 
 export const UserContext = createContext<UserContextType>(
@@ -42,6 +45,7 @@ export const UserContext = createContext<UserContextType>(
 export const UserProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1);
   const router = useRouter();
   const signIn = async (email: string, password: string) => {
     try {
@@ -101,10 +105,19 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
       localStorage.setItem("token", data.token);
       setUser(data.user);
       router.push("./");
-    } catch (error) {
-      console.error(error);
-      toast.error("Амжилтгүй! хэрэглэгч бүртгэлтэй байна");
-      router.push("sign-up");
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response) {
+        const message = error.response.data.message;
+
+        if (message === "Имэйл бүртгэлтэй байна") {
+          toast.error("Имэйл бүртгэлтэй байна");
+          setStep(step - 1);
+        } else {
+          toast.error(message || "Бүртгэл амжилтгүй боллоо");
+        }
+      } else {
+        toast.error("Сервертэй холбогдож чадсангүй");
+      }
     }
   };
   const signOut = async () => {
@@ -142,7 +155,16 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <UserContext.Provider
-      value={{ user, signIn, signOut, signUp, UpdateUserAddress, loading }}
+      value={{
+        user,
+        signIn,
+        signOut,
+        signUp,
+        UpdateUserAddress,
+        loading,
+        step,
+        setStep,
+      }}
     >
       {loading ? <Loader className="animate-spin" /> : children}
     </UserContext.Provider>

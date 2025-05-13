@@ -46,7 +46,14 @@ export function StatusColumn({ row }: { row: any }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="capitalize">
+        <Button
+          variant="outline"
+          className={`capitalize ${
+            status == "pending" ? "border-amber-400" : ""
+          } ${status == "delivered" ? "border-emerald-500" : ""} ${
+            status == "canceled" ? "border-red-400" : ""
+          }`}
+        >
           {status} <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

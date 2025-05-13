@@ -66,7 +66,7 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
     getCategory();
   }, []);
 
-  const addNewFood = async (url:string) => {
+  const addNewFood = async (url: string) => {
     try {
       setLoading(true);
       const response = await axios.post("http://localhost:3001/food", {
@@ -139,14 +139,14 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
                     {prevImage && (
                       <img className="w-[100%] h-[100%]" src={prevImage} />
                     )}
-                     {newImg && (
-          <button
-            onClick={() => setPrevImage(null)}
-            className="text-black absolute w-4 h-4 flex justify-center items-center bg-white rounded-full z-10 left-[90%] bottom-[34%]"
-          >
-            <X size={15} />
-          </button>
-        )}
+                    {newImg && (
+                      <button
+                        onClick={() => setPrevImage(null)}
+                        className="text-black absolute w-4 h-4 flex justify-center items-center bg-white rounded-full z-10 left-[90%] bottom-[34%]"
+                      >
+                        <X size={15} />
+                      </button>
+                    )}
                     <div className="flex flex-col  absolute items-center justify-center">
                       <div
                         className={`p-2 bg-white rounded-full ${
@@ -166,12 +166,12 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
                     </div>
 
                     <input
-                      onChange={ (e) => {
+                      onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
                           setNewImg(file);
-                          setPrevImage( URL.createObjectURL(file))
-                       setImgLoading(false);
+                          setPrevImage(URL.createObjectURL(file));
+                          setImgLoading(false);
                         }
                       }}
                       type="file"
@@ -183,17 +183,19 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
 
                 <div className="w-full flex flex-col items-end">
                   <button
-                    onClick={async() => {
+                    onClick={async () => {
                       const url = await uploadImage(newImg);
-                       if (url) {
-                   
+                      if (url) {
                         await addNewFood(url);
                       }
-                     
                     }}
                     className="flex w-[93px] h-10 justify-center items-center bg-black text-white rounded-xl"
                   >
-                    Add dish
+                    {loading ? (
+                      <Loader size={18} className="animate-spin" />
+                    ) : (
+                      "Add dish"
+                    )}
                   </button>
                 </div>
               </div>

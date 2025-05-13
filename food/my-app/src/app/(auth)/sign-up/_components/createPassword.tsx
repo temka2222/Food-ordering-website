@@ -39,6 +39,7 @@ export const CreatePassword = ({
   const { signUp, user } = useUser();
   const { register, handleSubmit, formState, watch } = useForm({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       password: "",
       confirmPass: "",
