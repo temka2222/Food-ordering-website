@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { CategoryType, FoodsType } from "../page";
-import { FoodCard } from "./productCard";
+
 import { AllDishesList } from "./AllDishesList";
 import { CategoriesFoodList } from "./CategoriesFoodList";
-import { SelectedFoodProvider, useSelecFood } from "./SelectedFoodProvider";
+import { useSelecFood } from "./SelectedFoodProvider";
 export type AllDishesType = {
   categoryId: string;
 };

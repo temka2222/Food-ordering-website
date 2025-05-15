@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useSelecFood } from "./SelectedFoodProvider";
 import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
+import { api } from "@/app/axios";
 type UseAddOrderType = {
   setIsLoading: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
@@ -23,7 +23,7 @@ export const useAddOrder = ({
     }));
 
     try {
-      const response = await axios.post("http://localhost:3001/order", {
+      await api.post("/order", {
         user: user?._id,
         foodOrderItems: foodOrderItems,
       });

@@ -6,10 +6,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import axios from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FoodsType } from "../(user)/page";
+import { api } from "../axios";
+
 type Category = {
   categoryName: string;
   _id: string;
@@ -23,21 +22,15 @@ export const Categories = ({
   setCategoryId,
 }: CategoriesPrposType) => {
   const [category, setCategory] = useState<Category[]>([]);
-  const [foods, setFoods] = useState<FoodsType[]>([]);
+
   const getCategory = async () => {
-    const response = await axios.get("http://localhost:3001/category");
+    const response = await api.get("/category");
     setCategory(response.data.categories);
   };
 
   useEffect(() => {
     getCategory();
   }, []);
-  const getFoods = async (categoryId: string) => {
-    const response = await axios.get(
-      `http://localhost:3001/food?categoryId=${categoryId}`
-    );
-    setFoods(response.data.foods);
-  };
 
   return (
     <div className="flex flex-col gap-10 pt-4 pb-4 pr-22 pl-22   ">

@@ -1,7 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { ImageIcon, X } from "lucide-react";
-import { CLOUD_NAME, UPLOAD_PRESET } from "./adminProductCard";
-import axios from "axios";
 import { useState } from "react";
 
 type ImagePropsType = {

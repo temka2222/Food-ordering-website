@@ -7,14 +7,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ImageIcon, Loader, PlusIcon, X } from "lucide-react";
-import { FoodsListProps } from "./foodList";
 import axios from "axios";
 import { CategoryType } from "@/app/(user)/page";
 import { useEffect, useState } from "react";
-import { newFoodsType } from "./adminProductCard";
 import { toast } from "sonner";
-import { undefined } from "zod";
-import { Button } from "@/components/ui/button";
+import { api } from "@/app/axios";
 type NewFoodPropsType = {
   categoryId: string;
   getFoods: () => Promise<void>;
@@ -55,9 +52,7 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
   };
 
   const getCategory = async () => {
-    const response = await axios.get(
-      `http://localhost:3001/category?categoryId=${categoryId}`
-    );
+    const response = await api.get(`/category?categoryId=${categoryId}`);
 
     setCategory(response.data.categories);
   };
@@ -69,7 +64,7 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
   const addNewFood = async (url: string) => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3001/food", {
+      await api.post("/food", {
         foodName: newFoodName,
         price: newPrice,
         image: url,
@@ -80,6 +75,7 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
       toast.success("New dish is being added to the menu");
       setOpen(false);
     } catch (error) {
+      console.error(error);
       toast.error("Failed to create new food");
     } finally {
       setLoading(false);
@@ -102,7 +98,7 @@ export const AddNewFood = ({ categoryId, getFoods }: NewFoodPropsType) => {
               <div className="flex flex-col w-[462px] h-[272px]  gap-10 justify-center pt-40">
                 <div className="flex flex-row gap-6 ">
                   <div className="flex-1 flex flex-col gap-2">
-                    <p className="text-black">Food name</p>
+                    <div className="text-black">Food name</div>
                     <input
                       onChange={(e) => {
                         setNewFoodName(e.target.value);

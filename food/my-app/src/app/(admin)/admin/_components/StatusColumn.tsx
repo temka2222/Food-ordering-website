@@ -7,39 +7,27 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { FoodType } from "@/app/(user)/_components/OrderHistory";
-import axios from "axios";
 import { toast } from "sonner";
+import { Row } from "@tanstack/react-table";
+import { OrdersTableType } from "./columns";
+import { api } from "@/app/axios";
 
-export type OrdersTableType = {
-  user: string;
-  foodOrderItems: FoodType[];
-  createdAt: string;
-  totalPrice: number;
-  address: string;
-  status: "pending" | "delivered" | "canceled";
-};
-
-export function StatusColumn({ row }: { row: any }) {
+export function StatusColumn({ row }: { row: Row<OrdersTableType> }) {
   const [status, setStatus] = useState<string>(row.getValue("status"));
 
   const StatusChange = async (newStatus: string, orderId: string) => {
     setStatus(newStatus);
-    console.log(status);
     try {
-      const response = await axios.put(
-        "http://localhost:3001/order/update-status",
-        {
-          orderId,
-          status: newStatus,
-        }
-      );
-      toast.success("amjilttai");
+      await api.put("/order/update-status", {
+        orderId,
+        status: newStatus,
+      });
+      toast.success("Амжилттай шинэчлэгдлээ");
     } catch (error) {
-      toast.error("error");
+      console.error(error);
+      toast.error("Алдаа гарлаа");
     }
   };
 
@@ -49,9 +37,9 @@ export function StatusColumn({ row }: { row: any }) {
         <Button
           variant="outline"
           className={`capitalize ${
-            status == "pending" ? "border-amber-400" : ""
-          } ${status == "delivered" ? "border-emerald-500" : ""} ${
-            status == "canceled" ? "border-red-400" : ""
+            status === "pending" ? "border-amber-400" : ""
+          } ${status === "delivered" ? "border-emerald-500" : ""} ${
+            status === "canceled" ? "border-red-400" : ""
           }`}
         >
           {status} <ChevronDown className="ml-2 h-4 w-4" />

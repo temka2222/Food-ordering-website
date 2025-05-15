@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import { api } from "@/app/axios";
 import { useEffect, useState } from "react";
 type CountFoodsProps = {
   categoryId: string | "";
@@ -7,9 +7,7 @@ type CountFoodsProps = {
 export const Countfoods = ({ categoryId }: CountFoodsProps) => {
   const [totalFoods, setTotalFoods] = useState<number>(0);
   const getCountFoods = async () => {
-    const response = await axios.get(
-      `http://localhost:3001/food/count?categoryId=${categoryId}`
-    );
+    const response = await api.get(`/food/count?categoryId=${categoryId}`);
     setTotalFoods(response.data.totalFood);
   };
 

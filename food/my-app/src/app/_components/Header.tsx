@@ -3,17 +3,11 @@ import { Logo } from "./assets/Logo";
 import { useRouter } from "next/navigation";
 import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
 import { ShopCard } from "./assets/Shoppingcard";
-import { ChevronRight, MapIcon, MapPin, User2Icon, X } from "lucide-react";
+import { ChevronRight, MapPin, User2Icon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OrderDetail } from "../(user)/_components/OrderDeatail";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { AddAddress } from "./assets/AddAddress";
 export const Header = () => {
   const { user, signOut } = useUser();

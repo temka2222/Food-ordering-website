@@ -1,12 +1,7 @@
 "use client";
 import { Logo } from "@/app/_components/assets/Logo";
 import { useSelectedMenu } from "@/app/(admin)/admin/_components/selectedMenuProvider";
-import {
-  LayoutDashboard,
-  MenuIcon,
-  SettingsIcon,
-  TruckIcon,
-} from "lucide-react";
+import { LayoutDashboard, SettingsIcon, TruckIcon } from "lucide-react";
 
 export const Menu = () => {
   const { selectedMenu, setSelectedMenu } = useSelectedMenu();

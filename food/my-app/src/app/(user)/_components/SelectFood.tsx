@@ -6,10 +6,9 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DoorClosed, PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { PlusIcon } from "lucide-react";
+import { useState } from "react";
 import { formatWithApostrophe } from "./productCard";
-import { string } from "zod";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useSelecFood } from "./SelectedFoodProvider";
 import { UserDialog } from "./Dialog";

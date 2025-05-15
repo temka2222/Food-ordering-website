@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -64,18 +63,15 @@ export const schema = z
 
 export const ResetPassword = ({ step, setStep }: StepPropsType) => {
   const router = useRouter();
-  const { userValues, setUserValues } = useUser();
+
   const [checkValue, setCheckValue] = useState(false);
-  const { register, handleSubmit, formState, watch } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       password: "",
       confirmPass: "",
     },
   });
-  //   const { password, confirmPass } = watch();
-
-  //   console.log(password, confirmPass);
 
   return (
     <div className="flex  flex-row w-full gap-10 p-4 justify-center items-center pl-6  text-[16px]">
@@ -95,12 +91,7 @@ export const ResetPassword = ({ step, setStep }: StepPropsType) => {
             </p>
           </div>
           <form
-            onSubmit={handleSubmit((data) => {
-              const newvalue = { ...userValues };
-              newvalue.password = data.password;
-              newvalue.confirmPass = data.confirmPass;
-
-              setUserValues(newvalue);
+            onSubmit={handleSubmit(() => {
               setStep(step + 1);
             })}
             className="  flex  flex-col gap-8  "

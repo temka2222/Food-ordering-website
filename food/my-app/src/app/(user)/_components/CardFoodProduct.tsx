@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { FoodsType } from "../page";
-import axios from "axios";
+
 import { formatWithApostrophe } from "./productCard";
 import { X } from "lucide-react";
 import { useSelecFood } from "./SelectedFoodProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/app/axios";
 
 type CardFoodProductType = {
   foodId: string;
@@ -16,7 +17,7 @@ export const CardFoodProduct = ({ foodId, index }: CardFoodProductType) => {
   const { selectedFood, setSelectedFood } = useSelecFood();
   const newValue = [...selectedFood];
   const getFood = async () => {
-    const response = await axios.get(`http://localhost:3001/food/${foodId}`);
+    const response = await api.get(`/food/${foodId}`);
     setFood(response.data.food);
   };
 
@@ -51,7 +52,7 @@ export const CardFoodProduct = ({ foodId, index }: CardFoodProductType) => {
                   onClick={() => {
                     if (selectedFood[index].qty == 1) return;
                     if (selectedFood[index].qty > 1) {
-                      let number = selectedFood[index].qty - 1;
+                      const number = selectedFood[index].qty - 1;
                       newValue[index].qty = number;
                       setSelectedFood(newValue);
                     }
@@ -63,7 +64,7 @@ export const CardFoodProduct = ({ foodId, index }: CardFoodProductType) => {
                 <button
                   className="pl-2 pr-2  bg-white border-solid border rounded-full"
                   onClick={() => {
-                    let number = selectedFood[index].qty + 1;
+                    const number = selectedFood[index].qty + 1;
                     newValue[index].qty = number;
                     setSelectedFood(newValue);
                   }}

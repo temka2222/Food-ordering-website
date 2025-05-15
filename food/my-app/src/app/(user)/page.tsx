@@ -1,8 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { relative } from "path";
-import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
+import { useState } from "react";
 import { Categories } from "../_components/Categories";
 import { DishesList } from "./_components/DishesList";
 export type CategoryType = {

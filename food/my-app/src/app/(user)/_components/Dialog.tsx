@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { ReactNode } from "react";
 import { DilaogPic } from "./DialogPic";
 type DialogPropsType = {
   isOpen: boolean;

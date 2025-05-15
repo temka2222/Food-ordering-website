@@ -1,25 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardFoodProduct } from "./CardFoodProduct";
-import { SelectedFoodType, useSelecFood } from "./SelectedFoodProvider";
+import { useSelecFood } from "./SelectedFoodProvider";
 import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Loader, ShoppingCart } from "lucide-react";
 import { formatWithApostrophe } from "./productCard";
 import { useAddOrder } from "./AddOrder";
-import axios from "axios";
+
 import { UserDialog } from "./Dialog";
 import { OrderCartMessage } from "./OrderCartMessage";
 import { OrderHistory } from "./OrderHistory";
-type OrderDetailType = {
-  isOpensheet: boolean;
-  setIsOpensheet: (value: boolean) => void;
-};
+
 export const OrderDetail = () => {
-  const { selectedFood, setSelectedFood } = useSelecFood();
+  const { selectedFood } = useSelecFood();
   const [selectedButton, setSelectedButton] = useState("cart");
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState("");
+  const title = "";
   const [description, setDescription] = useState("");
   const { AddNewOrder } = useAddOrder({
     setIsLoading,

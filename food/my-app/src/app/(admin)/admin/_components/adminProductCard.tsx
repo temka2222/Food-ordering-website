@@ -1,5 +1,4 @@
 "use client";
-import { CategoryType } from "@/app/(user)/page";
 
 import {
   Dialog,
@@ -9,15 +8,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Close, DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
-import { Edit2Icon, ImageIcon, Loader, TrashIcon, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Edit2Icon, Loader, TrashIcon } from "lucide-react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { CategorySelect } from "./CategorySelect";
 import { toast } from "sonner";
 import { FoodImage } from "./updateFoodImage";
 import { formatWithApostrophe } from "@/app/(user)/_components/productCard";
+import { api } from "@/app/axios";
 
 type FoodsPropsType = {
   foodId: string;
@@ -49,13 +48,12 @@ export const AdminFoodCard = ({
   categoryName,
   categoryId,
   getFoods,
-  getCategory,
 }: FoodsPropsType) => {
   const [newFoodName, setNewFoodName] = useState(name);
   const [newPrice, setNewPrice] = useState(price);
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newImg, setNewImg] = useState<File | undefined>();
-  const [uploadedUrl, SetUploadedUrl] = useState(image);
+  const uploadedUrl = image;
   const [selectedCategoryId, setSelectedCategoryId] = useState(categoryId);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -85,7 +83,7 @@ export const AdminFoodCard = ({
   const updateFood = async (uploadedUrl: string) => {
     try {
       setLoading(true);
-      const response = await axios.put(`http://localhost:3001/food/${foodId}`, {
+      await api.put(`/food/${foodId}`, {
         foodName: newFoodName,
         price: newPrice,
         image: uploadedUrl,
@@ -98,6 +96,7 @@ export const AdminFoodCard = ({
       toast.success("successfully updated the food");
       setOpen(false);
     } catch (error) {
+      console.error(error);
       toast.error("Failed to update food");
     } finally {
       setLoading(false);
@@ -107,7 +106,7 @@ export const AdminFoodCard = ({
   const deleteFood = async () => {
     try {
       setLoading(true);
-      const response = await axios.delete("http://localhost:3001/food", {
+      await api.delete("/food", {
         data: { _id: foodId },
       });
 
@@ -121,6 +120,7 @@ export const AdminFoodCard = ({
       });
       setOpen(false);
     } catch (error) {
+      console.error(error);
       toast.error("Failed to delete food");
     } finally {
       setLoading(false);
@@ -129,7 +129,7 @@ export const AdminFoodCard = ({
   const undoDeleteFood = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3001/food", {
+      await api.post("/food", {
         foodName: name,
         price: price,
         category: categoryId,
@@ -140,6 +140,7 @@ export const AdminFoodCard = ({
       toast.success("undo successful!");
       setOpen(false);
     } catch (error) {
+      console.error(error);
       toast.error("Failed!");
     } finally {
       setLoading(false);

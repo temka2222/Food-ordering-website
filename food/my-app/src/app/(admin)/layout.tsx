@@ -1,13 +1,31 @@
 "use client";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { Menu } from "./admin/_components/adminMenu";
 import { ShieldUser } from "lucide-react";
 import { SelectedMenuProvider } from "./admin/_components/selectedMenuProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { useUser } from "../(auth)/sign-up/_components/userValueProvider";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({ children }: PropsWithChildren) {
   const { user, signOut } = useUser();
+  const router = useRouter();
+
+  if (user === undefined) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <a
+          href="/log-in"
+          className="text-blue-600 underline hover:text-blue-800"
+        >
+          Энд дарж нэвтэрнэ үү
+        </a>
+      </div>
+    );
+  }
+  if (!user || user.role !== "admin") {
+    router.push("./log-in");
+  }
 
   return (
     <SelectedMenuProvider>

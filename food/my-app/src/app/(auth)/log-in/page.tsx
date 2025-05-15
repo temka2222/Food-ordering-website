@@ -2,31 +2,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useUser } from "../sign-up/_components/userValueProvider";
-import { useState } from "react";
-type StepPropsType = {
-  step: number;
-  setStep: (value: number) => void;
-};
-export const schema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Insert email" })
-    .email({ message: "Please provide a valid email address." }),
-  password: z
-    .string()
-    .min(1, { message: "Insert Password" })
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, {
-      message: "Password must include at least one letter and one number.",
-    }),
-});
+import { loginSchema } from "./_components/schema";
+
 export default function Home() {
   const router = useRouter();
   const { signIn } = useUser();
   const { register, handleSubmit, formState } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
     },
@@ -94,16 +78,16 @@ export default function Home() {
     } 
   `}
             >
-              Let's Go
+              Let&apos;s Go
             </button>
           </form>
           <div className="flex flex-row gap-3">
-            <p className="text-[#71717A]  ">Don't have an account?</p>
+            <p className="text-[#71717A]  ">Don&apos;t have an account?</p>
             <button
               onClick={() => router.push("./sign-up")}
               className="text-[#2563EB]"
             >
-              Sign up{" "}
+              Sign up
             </button>
           </div>
         </div>

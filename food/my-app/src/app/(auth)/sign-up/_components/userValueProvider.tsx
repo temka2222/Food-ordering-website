@@ -1,9 +1,9 @@
 "use client";
+import { api, setAuthToken } from "@/app/axios";
 import axios from "axios";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
-  Children,
   createContext,
   PropsWithChildren,
   useContext,
@@ -11,7 +11,6 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
-import { boolean } from "zod";
 
 export type UserType = {
   _id: string;
@@ -50,7 +49,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { data } = await axios.post("http://localhost:3001/auth/signin", {
+      const { data } = await api.post("/auth/signin", {
         email,
         password,
       });
@@ -74,15 +73,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const { data } = await axios.put(
-        "http://localhost:3001/auth/update",
-        { userAddress: address },
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
+      await api.put("/auth/update", { userAddress: address });
       getUser();
       toast.success("Хаяг амжилттай шинэчлэгдлээ");
     } catch {
@@ -96,7 +87,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     address: string
   ) => {
     try {
-      const { data } = await axios.post("http://localhost:3001/auth/signup", {
+      const { data } = await api.post("/auth/signup", {
         email,
         password,
         phoneNumber,
@@ -105,7 +96,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
       localStorage.setItem("token", data.token);
       setUser(data.user);
       router.push("./");
-    } catch (error: any) {
+    } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const message = error.response.data.message;
 
@@ -127,20 +118,17 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   };
 
   const getUser = async () => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:3001/auth/me", {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      console.log("asdasdas", data);
-
+      const { data } = await api.get("/auth/me");
       setUser(data);
-    } catch {
-      localStorage.removeItem("token");
-      setUser(undefined);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+
+      // localStorage.removeItem("token");
+      // setUser(undefined);
     } finally {
       setLoading(false);
     }
@@ -149,7 +137,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-
+    setAuthToken(token);
     getUser();
   }, []);
 
@@ -166,7 +154,13 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         setStep,
       }}
     >
-      {loading ? <Loader className="animate-spin" /> : children}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center h-screen gap-4">
+          <Loader className="animate-spin w-20 h-20 text-gray-500" />
+        </div>
+      ) : (
+        children
+      )}
     </UserContext.Provider>
   );
 };

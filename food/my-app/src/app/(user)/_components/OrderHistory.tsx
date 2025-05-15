@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { FoodsType } from "../page";
 import {
@@ -7,6 +6,7 @@ import {
 } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { MapIcon, SoupIcon, TimerIcon } from "lucide-react";
 import { OrderCartMessage } from "./OrderCartMessage";
+import { api } from "@/app/axios";
 export type FoodType = {
   food: FoodsType;
   quantity: number;
@@ -22,12 +22,9 @@ type OrderType = {
 };
 export const OrderHistory = () => {
   const [order, setOrder] = useState<OrderType[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
   const getOrders = async () => {
-    const response = await axios.get(
-      `http://localhost:3001/order?user=${user?._id}`
-    );
+    const response = await api.get(`/order?user=${user?._id}`);
     setOrder(response.data.orders);
   };
   useEffect(() => {

@@ -1,43 +1,21 @@
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  ChevronDown,
-  ChevronUp,
-  MoreHorizontal,
-} from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+
 import { FoodType } from "@/app/(user)/_components/OrderHistory";
 import { StatusColumn } from "./StatusColumn";
 
 export type OrdersTableType = {
+  _id: string;
   user: string;
   foodOrderItems: FoodType[];
   createdAt: string;

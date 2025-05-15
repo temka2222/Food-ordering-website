@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { useRouter } from "next/navigation";
 type StepPropsType = {
   step: number;
@@ -16,7 +15,6 @@ export const schema = z.object({
 });
 export const InsertEmail = ({ step, setStep }: StepPropsType) => {
   const router = useRouter();
-  const { userValues, setUserValues } = useUser();
 
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
@@ -44,12 +42,8 @@ export const InsertEmail = ({ step, setStep }: StepPropsType) => {
             </p>
           </div>
           <form
-            onSubmit={handleSubmit((data) => {
+            onSubmit={handleSubmit(() => {
               setStep(step + 1);
-              const newvalue = { ...userValues };
-              newvalue.email = data.email;
-
-              setUserValues(newvalue);
             })}
             className="  flex flex-col gap-8  "
           >

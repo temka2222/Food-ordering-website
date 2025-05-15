@@ -1,13 +1,12 @@
 import { useUser } from "@/app/(auth)/sign-up/_components/userValueProvider";
 import { Button } from "@/components/ui/button";
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
-import axios from "axios";
+
 import { useState } from "react";
 
 export const AddAddress = () => {
-  const [selectButton, setSelectButton] = useState("Deliver Here");
   const [address, setAddress] = useState("");
-  const { UpdateUserAddress, user } = useUser();
+  const { UpdateUserAddress } = useUser();
 
   return (
     <DialogContent className=" gap-6 rounded-xl">

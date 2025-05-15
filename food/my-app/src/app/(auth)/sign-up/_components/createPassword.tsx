@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useUser } from "./userValueProvider";
 import { useState } from "react";
-import { text } from "stream/consumers";
 import { useRouter } from "next/navigation";
 import { NewUserType } from "../page";
 type StepPropsType = {
@@ -28,16 +27,11 @@ export const schema = z
     path: ["confirmPass"],
   });
 
-export const CreatePassword = ({
-  step,
-  setStep,
-  newUser,
-  setNewUser,
-}: StepPropsType) => {
+export const CreatePassword = ({ step, setStep, newUser }: StepPropsType) => {
   const router = useRouter();
   const [checkValue, setCheckValue] = useState(false);
-  const { signUp, user } = useUser();
-  const { register, handleSubmit, formState, watch } = useForm({
+  const { signUp } = useUser();
+  const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
@@ -117,7 +111,7 @@ export const CreatePassword = ({
                               : "bg-black"
                           } `}
             >
-              Let's Go
+              Let&apos;s Go
             </button>
           </form>
           <div className="flex flex-row gap-3">

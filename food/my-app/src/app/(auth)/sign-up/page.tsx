@@ -1,6 +1,6 @@
 "use client";
-import { ArrowLeft, ArrowLeftIcon } from "lucide-react";
-import { PropsWithChildren, use, useState } from "react";
+
+import { useState } from "react";
 import { InputEmail } from "./_components/inputEmail";
 import { CreatePassword } from "./_components/createPassword";
 import { useUser } from "./_components/userValueProvider";

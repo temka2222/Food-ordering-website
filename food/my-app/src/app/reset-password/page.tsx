@@ -1,5 +1,5 @@
 "use client";
-import {  useState } from "react"
+import { useState } from "react";
 import { InsertEmail } from "./_components/insertEmail";
 import { ResetPassword } from "./_components/reset-pass";
 

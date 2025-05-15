@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 import { OrdersTableType, columns } from "./columns";
 import { DataTable } from "./data-table";
-import axios from "axios";
 import { Calendar } from "lucide-react";
+import { api } from "@/app/axios";
 
 export const OrderTable = () => {
   const [data, setData] = useState<OrdersTableType[]>([]);
   const getOrders = async () => {
-    const response = await axios.get("http://localhost:3001/order");
+    const response = await api.get("/order");
     setData(response.data.orders);
   };
 

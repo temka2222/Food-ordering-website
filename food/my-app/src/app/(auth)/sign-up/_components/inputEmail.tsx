@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { UserType, useUser } from "./userValueProvider";
 import { useRouter } from "next/navigation";
 import { NewUserType } from "../page";
 type StepPropsType = {
@@ -79,7 +78,7 @@ export const InputEmail = ({
                               : "bg-black"
                           } `}
             >
-              Let's Go
+              Let&apos;s Go
             </button>
           </form>
           <div className="flex flex-row gap-3">

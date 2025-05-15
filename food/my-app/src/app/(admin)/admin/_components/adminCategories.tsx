@@ -1,9 +1,8 @@
 "use client";
 import { CategoryType } from "@/app/(user)/page";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Countfoods } from "./countFoods";
-import { PlusIcon, Target } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { FoodList } from "./foodList";
 import {
   Dialog,
@@ -13,19 +12,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { api } from "@/app/axios";
 export const AdminCategories = () => {
   const [category, setCategory] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [newCategory, setNewCategory] = useState<string>("");
 
   const getCategory = async () => {
-    const response = await axios.get("http://localhost:3001/category");
+    const response = await api.get("/category");
     setCategory(response.data.categories);
   };
 
   const addCategory = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/category", {
+      await api.post("/category", {
         categoryName: newCategory,
       });
       getCategory();
